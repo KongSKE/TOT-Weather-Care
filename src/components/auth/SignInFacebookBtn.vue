@@ -16,8 +16,5 @@ export default {
       this.$store.dispatch(LOGIN_FACEBOOK);
     }
   },
-  computed: {
-    ...mapGetters(['getError', 'isLoading'])
-  }
 };
 </script>

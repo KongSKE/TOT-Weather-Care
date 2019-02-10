@@ -11,6 +11,7 @@ import {
     UPDATE_USER,
     AUTO_LOGIN
 } from './../actions.type'
+
 import firebase from '@/config/firebaseConfig'
 
 const state = {
@@ -36,7 +37,7 @@ const getters = {
 }
 
 const actions = {
-    [LOGIN_FACEBOOK](context, credentials) {
+    [LOGIN_FACEBOOK](context) {
         console.log('LOGIN CALLED!')
         context.commit(SET_LOADING, true)
         var provider = new firebase.auth.FacebookAuthProvider()
