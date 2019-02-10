@@ -1,3 +1,3 @@
 # tot-hackathon
 
-> Just templete
+> Just template for Vue.js
