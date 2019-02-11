@@ -45,7 +45,7 @@
                 </v-layout>
                 <v-layout row wrap justify-center>
                   <v-btn color="primary" @click="step1NextStep">Continue</v-btn>
-                  <v-btn flat @click="e1 = 1">Cancel</v-btn>
+                  <v-btn flat @click="goToLoginPage">Cancel</v-btn>
                 </v-layout>
               </v-container>
             </v-form>
@@ -62,7 +62,7 @@
                     <!-- :rules="nameRules" -->
                     <v-text-field
                       v-model="email"
-                      
+                      :rules=emailRules
                       label="Email"
                       placeholder="example@tot.com"
                       required
@@ -126,7 +126,11 @@ export default {
       inputError: {
         status: true,
         message: ''
-      }
+      },
+      emailRules: [
+        v => !!v || "E-mail is required",
+        v => /.+@.+/.test(v) || "E-mail must be valid"
+      ]
     };
   },
   methods: {
@@ -146,7 +150,7 @@ export default {
         }
       )
       .then(function(response) {
-        if(response.data.return_code == 500) {
+        if(response.data.return_code == 200) {
           console.log('Success! This number can use.')
           vm.inputError.status = true
           vm.inputError.message = ''
