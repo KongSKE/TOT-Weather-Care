@@ -18,7 +18,7 @@
       <v-list class="pt-0" dense>
         <v-divider></v-divider>
 
-        <v-list-tile @click="redirect('/home')">
+        <v-list-tile @click="redirect('/')">
           <v-list-tile-action>
             <v-icon>home</v-icon>
           </v-list-tile-action>

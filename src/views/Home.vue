@@ -10,6 +10,53 @@
       </v-layout>
     </v-container>
 
+    <v-layout row class="justify-center" wrap>
+      <v-flex lg5 sm12>
+        <v-card>
+          <v-img class="white--text" height="200px" :src="setImage(articles[0].aqi[0].aqi)">
+            <v-container fill-height fluid>
+              <v-layout fill-height>
+                <v-flex xs12 align-end flexbox>
+                  <p class="headline">{{articles[0].aqi[0].description}}</p>
+                  <p class="headline">AQI: {{articles[0].aqi[0].aqi}}</p>
+                  <p>{{articles[0].aqi[0].density}} microgram / cubic meters</p>
+                  <span class="grey--text">{{articles[0].aqi[0].time}} Today</span>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-img>
+          <v-card-actions>
+            <!-- <v-btn flat color="orange">Share</v-btn> -->
+            <!-- <v-btn flat color="orange">Explore</v-btn> -->
+            <div class="text-xs-center">
+              <v-dialog v-model="dialog" width="500">
+                <v-btn slot="activator" color="red lighten-2" light>
+                  More
+                </v-btn>
+                <v-card>
+                  <v-card-title class="headline grey lighten-2" primary-title>
+                    <b>Suggestion</b>
+                  </v-card-title>
+                  <v-card-text>
+                    <h3>{{ articles[0].aqi[0].suggestion }}</h3>
+                  </v-card-text>
+                  <v-divider></v-divider>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" flat @click="dialog = false">
+                      OK
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </div>
+          </v-card-actions>
+        </v-card>
+      </v-flex>
+    </v-layout>
+
+    <v-divider class="my-3"></v-divider>
+
     <!-- Today and tomorrow tab -->
     <div>
       <v-tabs v-model="active" color="cyan" dark centered="true" slider-color="yellow" grow="true">
@@ -51,20 +98,46 @@
                         </v-container>
                       </v-img>
 
-                      <v-card-actions>
-                        <v-btn flat>Share</v-btn>
-                        <v-btn flat color="purple">Explore</v-btn>
-                        <v-spacer></v-spacer>
-                      </v-card-actions>
-                    </v-card>
-                  </div>
-                </v-flex>
-              </v-layout>
-            </v-container>
+                        <v-card-actions>
+                          <!-- <v-btn flat>Share</v-btn> -->
+                          <!-- <v-btn flat color="purple">Explore</v-btn> -->
+                          <div class="text-xs-center">
+                            <v-dialog v-model="dialog" width="500">
+                              <v-btn slot="activator" color="red lighten-2" light>
+                                More
+                              </v-btn>
+                              <v-card>
+                                <v-card-title class="headline grey lighten-2" primary-title>
+                                  <b>Suggestion</b>
+                                </v-card-title>
+                                <v-card-text>
+                                  <h3>{{ data.suggestion }}</h3>
+                                </v-card-text>
+                                <v-divider></v-divider>
+                                <v-card-actions>
+                                  <v-spacer></v-spacer>
+                                  <v-btn color="primary" flat @click="dialog = false">
+                                    OK
+                                  </v-btn>
+                                </v-card-actions>
+                              </v-card>
+                            </v-dialog>
+                          </div>
+
+                          <v-spacer></v-spacer>
+                        </v-card-actions>
+                      </v-card>
+                    </div>
+                  </v-flex>
+                </v-layout>
+              </v-container>
           </v-card>
         </v-tab-item>
       </v-tabs>
     </div>
+
+    <!-- AI Calculate -->
+    <p>AI : {{ calculateByAI }}</p>
   </div>
 </template>
 
@@ -72,7 +145,6 @@
 import { mapGetters } from "vuex";
 import { FETCH_ARTICLE } from "@/store/actions.type";
 import axios from "axios";
-import { watch } from "fs";
 
 var myDate = new Date();
 var month = ("0" + (myDate.getMonth() + 1)).slice(-2);
@@ -117,7 +189,8 @@ export default {
         "Unhealthy",
         "v-Unhealthy",
         "Hazardous"
-      ]
+      ],
+      dialog: false
     };
   },
   methods: {
@@ -191,7 +264,17 @@ export default {
   mounted: function() {
   },
   computed: {
-    ...mapGetters(["articles", "getCurrentBranch", "getUserInfo"])
+    ...mapGetters(["articles", "getCurrentBranch", "getUserInfo"]),
+    calculateByAI() {
+      let aqi = 0
+      let counter = 0
+      for(let i = 0 ; i < this.articles.length ; i++) {
+        for(let j = 0 ; j < this.articles[i].aqi.length ; j++) {
+          aqi += parseInt(this.articles[i].aqi[j].aqi)
+          counter += 1
+        }
+      }
+      return (aqi / counter)
   },
   watch: {
     active(value) {
@@ -211,6 +294,7 @@ export default {
           vm.status.statusCode = response.data.status;
         });
     }
+  }
   }
 };
 </script>
