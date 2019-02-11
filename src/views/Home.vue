@@ -148,12 +148,16 @@
         </v-sheet>
       </v-flex>
     </v-layout>
+
+    <!-- AI Calculate -->
+    <p>AI : {{ calculateByAI }}</p>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import { FETCH_ARTICLE } from "@/store/actions.type";
+import SimpleLinearRegression from 'ml-regression-simple-linear'
 var myDate = new Date();
 var month = ("0" + (myDate.getMonth() + 1)).slice(-2);
 var date = ("0" + myDate.getDate()).slice(-2);
@@ -220,7 +224,19 @@ export default {
     this.fetchArticles();
   },
   computed: {
-    ...mapGetters(["articles"])
+    ...mapGetters(["articles"]),
+    calculateByAI() {
+      let aqi = 0
+      let counter = 0
+      for(let i = 0 ; i < this.articles.length ; i++) {
+        for(let j = 0 ; j < this.articles[i].aqi.length ; j++) {
+          aqi += parseInt(this.articles[i].aqi[j].aqi)
+          counter += 1
+        }
+      }
+      return (aqi / counter)
+
+    }
   }
 };
 </script>
