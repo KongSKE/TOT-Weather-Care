@@ -18,6 +18,9 @@
                   <v-btn @click="sigininClicked">Sign-in</v-btn>
                   <v-btn @click="clearClicked">clear</v-btn>
                 </v-layout>
+                <v-layout justify-center>
+                    <a v-bind:href='Register' @click="linkClicked">Don't have an account yet?</a>  
+                </v-layout>
               </v-flex>
             </v-layout>
           </v-flex>
@@ -28,6 +31,8 @@
 </template>
 
 <script>
+import Register from '@/views/Register'
+
 export default {
   data() {
       return{
@@ -50,6 +55,9 @@ export default {
       },
       signinClicked() {
           // check password and email
+      },
+      linkClicked() {
+          window.location = 'Register'
       }
   }
 }
