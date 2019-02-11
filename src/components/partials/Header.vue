@@ -18,7 +18,7 @@
       <v-list class="pt-0" dense>
         <v-divider></v-divider>
 
-        <v-list-tile @click="redirect('/home')">
+        <v-list-tile @click="redirect('/')">
           <v-list-tile-action>
             <v-icon>home</v-icon>
           </v-list-tile-action>
@@ -43,7 +43,7 @@
     <v-toolbar app dark class="warning">
       <v-toolbar-side-icon @click.stop="sideNav = !sideNav" class="hidden-sm-and-up"></v-toolbar-side-icon>
       <!-- Toolbar label -->
-      <v-toolbar-title>TOT Hackathon 2019</v-toolbar-title>
+      <v-toolbar-title @click="redirect('/')">TOT Hackathon 2019</v-toolbar-title>
       <!-- Branch selection in nav bar-->
       <v-flex class="hidden-md-and-down" :style="branchSelectionStyle">
         <v-select v-model="select" :items="items" label="Select your Branch"></v-select>

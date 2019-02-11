@@ -16,8 +16,30 @@
             </v-container>
           </v-img>
           <v-card-actions>
-            <v-btn flat color="orange">Share</v-btn>
-            <v-btn flat color="orange">Explore</v-btn>
+            <!-- <v-btn flat color="orange">Share</v-btn> -->
+            <!-- <v-btn flat color="orange">Explore</v-btn> -->
+            <div class="text-xs-center">
+              <v-dialog v-model="dialog" width="500">
+                <v-btn slot="activator" color="red lighten-2" light>
+                  More
+                </v-btn>
+                <v-card>
+                  <v-card-title class="headline grey lighten-2" primary-title>
+                    <b>Suggestion</b>
+                  </v-card-title>
+                  <v-card-text>
+                    <h3>{{ articles[0].aqi[0].suggestion }}</h3>
+                  </v-card-text>
+                  <v-divider></v-divider>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" flat @click="dialog = false">
+                      OK
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </div>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -65,8 +87,31 @@
                         </v-img>
 
                         <v-card-actions>
-                          <v-btn flat>Share</v-btn>
-                          <v-btn flat color="purple">Explore</v-btn>
+                          <!-- <v-btn flat>Share</v-btn> -->
+                          <!-- <v-btn flat color="purple">Explore</v-btn> -->
+                          <div class="text-xs-center">
+                            <v-dialog v-model="dialog" width="500">
+                              <v-btn slot="activator" color="red lighten-2" light>
+                                More
+                              </v-btn>
+                              <v-card>
+                                <v-card-title class="headline grey lighten-2" primary-title>
+                                  <b>Suggestion</b>
+                                </v-card-title>
+                                <v-card-text>
+                                  <h3>{{ data.suggestion }}</h3>
+                                </v-card-text>
+                                <v-divider></v-divider>
+                                <v-card-actions>
+                                  <v-spacer></v-spacer>
+                                  <v-btn color="primary" flat @click="dialog = false">
+                                    OK
+                                  </v-btn>
+                                </v-card-actions>
+                              </v-card>
+                            </v-dialog>
+                          </div>
+
                           <v-spacer></v-spacer>
                         </v-card-actions>
                       </v-card>
@@ -120,6 +165,11 @@ export default {
     return {
       today: 'year',
       tracked: {
+        '2019-02-14': [23, 45, 10],
+        '2019-02-13': [10, 25, 10],
+        '2019-02-12': [10, 25, 10],
+        '2019-02-11': [10, 25, 10],
+        '2019-02-10': [10, 25, 10],
         '2019-02-09': [23, 45, 10],
         '2019-02-08': [10, 30, 10, 20, 30],
         '2019-02-07': [0, 78, 5],
@@ -131,7 +181,8 @@ export default {
         '2019-02-01': [20, 25, 10]
       },
       colors: ['#00CC00', '#FFFF00', '#FF8C00', '#FF0000', '#CC0099', '#CC0000'],
-      category: ['Good', 'Moderate', 'Unhealthy-s', 'Unhealthy', 'v-Unhealthy', 'Hazardous']
+      category: ['Good', 'Moderate', 'Unhealthy-s', 'Unhealthy', 'v-Unhealthy', 'Hazardous'],
+      dialog: false
     };
   },
   methods: {
