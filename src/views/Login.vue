@@ -1,7 +1,6 @@
 <template>
   <div class="login">
     <!-- <v-alert id = 'alert' :value="false" type="error">Your email or password is incorrect.</v-alert> -->
-
     <v-container>
       <v-layout justify-center>
         <img src="@/assets/tot-logo.png" width="70%" height="70%">
@@ -14,8 +13,20 @@
                 <v-layout justify-center>
                   <img src="@/assets/user-logo.png" width="30%" height="60%">
                 </v-layout>
-                <v-text-field v-model="email" :rules="emailRules" label="E-mail" required ref="email"></v-text-field>
-                <v-text-field type="password" v-model="password" :rules="nameRules" label="Password" required></v-text-field>
+                <v-text-field
+                  v-model="email"
+                  :rules="emailRules"
+                  label="E-mail"
+                  required
+                  ref="email"
+                ></v-text-field>
+                <v-text-field
+                  type="password"
+                  v-model="password"
+                  :rules="nameRules"
+                  label="Password"
+                  required
+                ></v-text-field>
                 <v-layout justify-center>
                   <v-btn @click="signinClicked">Sign-in</v-btn>
                   <v-btn @click="clearClicked">clear</v-btn>
@@ -34,7 +45,8 @@
 
 <script>
 import Register from "@/views/Register";
-import axios from "axios";
+import { mapGetters } from "vuex";
+import { LOGIN_EMAIL } from "@/store/actions.type";
 
 export default {
   data() {
@@ -56,21 +68,14 @@ export default {
     },
     signinClicked() {
       // check password and email
-      console.log(this.email)
-      var vm = this
-      axios
-      .post(
-        "https://tot-hackathon-2019.firebaseapp.com/api/user/checkid",
-        qs.stringify({ userid: this.email, }),
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-          }
-        }
-      )
+      var user = {}
+      user.email=this.email
+      user.password= this.password
+      console.log(user);
+      this.$store.dispatch(LOGIN_EMAIL, user);
     },
     linkClicked() {
-      window.location = "/Register";
+      window.location = "/register";
     }
   }
 };

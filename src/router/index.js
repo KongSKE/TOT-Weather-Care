@@ -5,6 +5,7 @@ import Home from '@/views/Home'
 import Login from '@/views/Login'
 import Register from '@/views/Register'
 import Profile from '@/views/Profile'
+import Temp from '@/views/Temperature'
 
 Vue.use(Router)
 
@@ -30,6 +31,11 @@ export default new Router({
       path: '/Profile',
       name: 'Profile',
       component: Profile
+    },
+    {
+      path: '/Temp',
+      name: 'Temp',
+      component: Temp
     }
   ]
 })

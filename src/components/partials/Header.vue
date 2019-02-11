@@ -45,12 +45,8 @@
       <!-- Toolbar label -->
       <v-toolbar-title>TOT Hackathon 2019</v-toolbar-title>
       <!-- Branch selection in nav bar-->
-      <v-flex class="hidden-md-and-down" :style="branchSelectionStyle" >
-        <v-select
-          :items="items"
-          v-model="selectedItem"
-          label="Select your Branch"
-        ></v-select>
+      <v-flex class="hidden-md-and-down" :style="branchSelectionStyle">
+        <v-select v-model="select" :items="items" label="Select your Branch"></v-select>
       </v-flex>
       <!-- Option -->
       <v-toolbar-items class="hidden-xs-only">
@@ -77,11 +73,8 @@
       </v-toolbar-items>
     </v-toolbar>
     <!-- Branch selection below -->
-    <v-flex class="hidden-lg-and-up" style="margin-top: 50px" :style="branchSelectionStyle" >
-      <v-select
-        :items="items"
-        label="Select your Branch"
-      ></v-select>
+    <v-flex class="hidden-lg-and-up" style="margin-top: 50px" :style="branchSelectionStyle">
+      <v-select v-model="select" :items="items" label="Select your Branch"></v-select>
     </v-flex>
     <!-- Login dialog -->
     <v-dialog v-model="dialogVisible" max-width="600">
@@ -116,18 +109,24 @@ import { mapGetters } from "vuex";
 import { LOGOUT } from "@/store/actions.type";
 import SignInFacebookBtn from "@/components/auth/SignInFacebookBtn";
 import SignInGoogleBtn from "@/components/auth/SignInGoogleBtn";
+import { FETCH_ARTICLE } from "@/store/actions.type";
 
 export default {
   name: "Header",
   components: { SignInFacebookBtn, SignInGoogleBtn },
   data() {
     return {
+      select: "Bangsaothong",
       activeIndex: this.$route.path,
       dialogVisible: false,
       loading: true,
       sideNav: false,
+<<<<<<< HEAD
       items: ["Bangsaothong", "Bangbor", "Bangpeeyai"],
       selectedItem: "Bangsaothong"
+=======
+      items: ["Bangsaothong", "Bangpeeyai", "Bangbor"]
+>>>>>>> 42127735e22ff094eb7a14cbb9ab9b3b37da1cb3
     };
   },
   methods: {
@@ -158,9 +157,19 @@ export default {
         this.dialogVisible = false;
       }
     },
+<<<<<<< HEAD
       selectedItem: function (newVal) {
     console.log(newVal);
   }
+=======
+    select(value) {
+      console.log(value);
+      this.$store.dispatch(FETCH_ARTICLE, value);
+    }
+  },
+  mounted: function() {
+    this.$store.dispatch(FETCH_ARTICLE, this.select);
+>>>>>>> 42127735e22ff094eb7a14cbb9ab9b3b37da1cb3
   }
 };
 </script>
