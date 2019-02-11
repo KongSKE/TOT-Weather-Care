@@ -6,10 +6,10 @@ import axios from 'axios'
 export const state = { articles: [] }
 
 export const actions = {
-    async [FETCH_ARTICLE](context) {
+    async [FETCH_ARTICLE](context, branch) {
         console.log('FETCH_ARTICLE called!')
         axios
-            .get('https://tot-hackathon-2019.firebaseapp.com/api/Bangsaothong')
+            .get('https://tot-hackathon-2019.firebaseapp.com/api/' + branch)
             .then(function (response) {
                 console.log("KUY " + JSON.stringify(response.data.result))
                 context.commit(SET_ARTICLE, response.data.result)
