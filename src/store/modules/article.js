@@ -9,7 +9,7 @@ export const actions = {
     async [FETCH_ARTICLE](context) {
         console.log('FETCH_ARTICLE called!')
         axios
-            .get('https://tot-hackathon-2019.firebaseapp.com/api/news')
+            .get('https://tot-hackathon-2019.firebaseapp.com/api/aqi')
             .then(function (response) {
                 console.log("KUY " + JSON.stringify(response.data.result))
                 context.commit(SET_ARTICLE, response.data.result)
