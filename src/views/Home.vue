@@ -1,7 +1,22 @@
 <template>
   <div>
+    <v-container fill-height>
+      <v-layout column align-center>
+        <v-flex>
+          <h3 class="display-3">Welcome to the site</h3>
+
+          <span
+            class="subheading"
+          >Lorem ipsum dolor sit amet, pri veniam forensibus id. Vis maluisset molestiae id, ad semper lobortis cum. At impetus detraxit incorrupte usu, repudiare assueverit ex eum, ne nam essent vocent admodum.</span>
+
+          <v-divider class="my-3"></v-divider>
+          <v-alert :value="true" color="success" icon="check_circle" outline>Safety</v-alert>
+        </v-flex>
+      </v-layout>
+    </v-container>
+
     <v-layout row class="justify-center" wrap>
-      <v-flex lg9 sm12>
+      <v-flex lg5 sm12>
         <v-card>
           <v-img class="white--text" height="200px" :src="setImage(articles[0].aqi[0].aqi)">
             <v-container fill-height fluid>
@@ -16,34 +31,51 @@
             </v-container>
           </v-img>
           <v-card-actions>
-            <v-btn flat color="orange">Share</v-btn>
-            <v-btn flat color="orange">Explore</v-btn>
+            <!-- <v-btn flat color="orange">Share</v-btn> -->
+            <!-- <v-btn flat color="orange">Explore</v-btn> -->
+            <div class="text-xs-center">
+              <v-dialog v-model="dialog" width="500">
+                <v-btn slot="activator" color="red lighten-2" light>
+                  More
+                </v-btn>
+                <v-card>
+                  <v-card-title class="headline grey lighten-2" primary-title>
+                    <b>Suggestion</b>
+                  </v-card-title>
+                  <v-card-text>
+                    <h3>{{ articles[0].aqi[0].suggestion }}</h3>
+                  </v-card-text>
+                  <v-divider></v-divider>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" flat @click="dialog = false">
+                      OK
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </div>
           </v-card-actions>
         </v-card>
       </v-flex>
     </v-layout>
 
-    <v-divider></v-divider>
+    <v-divider class="my-3"></v-divider>
 
     <!-- Today and tomorrow tab -->
     <div>
       <v-tabs v-model="active" color="cyan" dark centered="true" slider-color="yellow" grow="true">
         <v-tab v-for="n in articles" :key="n">{{ n.date }}</v-tab>
-        <v-tab-item v-for="(n,nIndex) in articles" :key="n">
+        <v-tab-item v-for="(n) in articles" :key="n">
           <v-card flat>
             <v-card-text></v-card-text>
             <v-container>
               <v-layout>
-                <v-flex lg4 :key="data" v-for="(data, dataIndex)  in n.aqi">
+                <v-flex lg4 :key="data" v-for="(data)  in n.aqi">
                   <!-- <div v-if="!(nIndex == 0 && dataIndex == 0)"> -->
                   <div>
                     <v-card>
-                      <v-img
-                        id="jamie"
-                        class="white--text"
-                        height="200px"
-                        :src="setImage(data.aqi)"
-                      >
+                      <v-img class="white--text" height="200px" :src="setImage(data.aqi)">
                         <v-container fill-height fluid>
                           <v-layout fill-height>
                             <v-flex xs12 align-end flexbox>
@@ -56,44 +88,34 @@
                         </v-container>
                       </v-img>
 
-                      <v-card-actions>
-                        <v-btn flat>Share</v-btn>
-                        <v-btn flat color="purple">Explore</v-btn>
-                        <v-spacer></v-spacer>
-                      </v-card-actions>
-                    </v-card>
-
-                    <!-- vue hover -->
-                    <!-- <v-hover>
-                      <v-card
-                        slot-scope="{ hover }"
-                        class="mx-auto"
-                        color="grey lighten-4"
-                        max-width="600"
-                      >
-                        <v-img
-                          :aspect-ratio="16/9"
-                          src="https://cdn.vuetifyjs.com/images/cards/kitchen.png"
-                        >
-                          <v-expand-transition>
-                            <div
-                              v-if="hover"
-                              class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal display-3 white--text"
-                              style="height: 100%;"
-                            >$14.99</div>
-                          </v-expand-transition>
-                        </v-img>
-                        <v-card-text class="pt-4" style="position: relative;">
-                          <div class="font-weight-light grey--text title mb-2">For the perfect meal</div>
-                          <h3
-                            class="display-1 font-weight-light orange--text mb-2"
-                          >QW cooking utensils</h3>
-                          <div
-                            class="font-weight-light title mb-2"
-                          >Our Vintage kitchen utensils delight any chef.
-                            <br>Made of bamboo by hand
+                        <v-card-actions>
+                          <!-- <v-btn flat>Share</v-btn> -->
+                          <!-- <v-btn flat color="purple">Explore</v-btn> -->
+                          <div class="text-xs-center">
+                            <v-dialog v-model="dialog" width="500">
+                              <v-btn slot="activator" color="red lighten-2" light>
+                                More
+                              </v-btn>
+                              <v-card>
+                                <v-card-title class="headline grey lighten-2" primary-title>
+                                  <b>Suggestion</b>
+                                </v-card-title>
+                                <v-card-text>
+                                  <h3>{{ data.suggestion }}</h3>
+                                </v-card-text>
+                                <v-divider></v-divider>
+                                <v-card-actions>
+                                  <v-spacer></v-spacer>
+                                  <v-btn color="primary" flat @click="dialog = false">
+                                    OK
+                                  </v-btn>
+                                </v-card-actions>
+                              </v-card>
+                            </v-dialog>
                           </div>
-                        </v-card-text>
+
+                          <v-spacer></v-spacer>
+                        </v-card-actions>
                       </v-card>
                     </v-hover>-->
                     <!-- new hover -->
@@ -166,7 +188,6 @@ export default {
     return {
       today: "year",
       tracked: {
-        "2019-02-12": [23, 24, 24],
         "2019-02-09": [23, 45, 10],
         "2019-02-08": [10, 30, 10, 20, 30],
         "2019-02-07": [0, 78, 5],
@@ -192,7 +213,8 @@ export default {
         "Unhealthy",
         "v-Unhealthy",
         "Hazardous"
-      ]
+      ],
+      dialog: false
     };
   },
   methods: {

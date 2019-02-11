@@ -18,7 +18,7 @@
       <v-list class="pt-0" dense>
         <v-divider></v-divider>
 
-        <v-list-tile @click="redirect('/home')">
+        <v-list-tile @click="redirect('/')">
           <v-list-tile-action>
             <v-icon>home</v-icon>
           </v-list-tile-action>
@@ -43,7 +43,7 @@
     <v-toolbar app dark class="warning">
       <v-toolbar-side-icon @click.stop="sideNav = !sideNav" class="hidden-sm-and-up"></v-toolbar-side-icon>
       <!-- Toolbar label -->
-      <v-toolbar-title>TOT Hackathon 2019</v-toolbar-title>
+      <v-toolbar-title @click="redirect('/')">TOT Hackathon 2019</v-toolbar-title>
       <!-- Branch selection in nav bar-->
       <v-flex class="hidden-md-and-down" :style="branchSelectionStyle">
         <v-select v-model="select" :items="items" label="Select your Branch"></v-select>
@@ -60,7 +60,7 @@
           <v-icon right dark>navigate_next</v-icon>
         </v-btn>
         <v-layout v-else>
-          <v-btn to="/Profile" flat class="body-2">
+          <v-btn to="/Profile" flat class="body-2" @click="profileInfo">
             <v-avatar class>
               <img :src="`${this.getUser.photoURL}`" alt="userImg">
             </v-avatar>
@@ -109,7 +109,7 @@ import { mapGetters } from "vuex";
 import { LOGOUT } from "@/store/actions.type";
 import SignInFacebookBtn from "@/components/auth/SignInFacebookBtn";
 import SignInGoogleBtn from "@/components/auth/SignInGoogleBtn";
-import { FETCH_ARTICLE } from "@/store/actions.type";
+import { FETCH_ARTICLE,GETPROFILE } from "@/store/actions.type";
 
 export default {
   name: "Header",
@@ -133,6 +133,12 @@ export default {
     },
     redirect(url) {
       window.location.href = url;
+    },
+    changeBranch(branch) {
+      console.log(this.selectedItem);
+    },
+    profileInfo(){
+      this.$store.dispatch(GETPROFILE,this.getUser.uId);
     }
   },
   computed: {
