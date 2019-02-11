@@ -47,7 +47,8 @@ const actions = {
     [GETPROFILE](context,uId){
         axios.get('https://tot-hackathon-2019.firebaseapp.com/api/user/'+uId)
         .then(function (response) {
-            console.log("KUY " + JSON.stringify(response.data.result))
+            console.log(uId)
+            console.log("KUY " + JSON.stringify(response.data))
             context.commit(SET_INFO, response.data.result)
         })
         .catch(function (error) {
@@ -106,6 +107,11 @@ const actions = {
     [AUTO_LOGIN](context, payload) {
         console.log('AUTO_LOGIN CALLED!')
         console.log(payload)
+        // axios.get('https://tot-hackathon-2019.firebaseapp.com/api/user/'+uId)
+        // .then(function (response) {
+        //     console.log("KUY " + JSON.stringify(response.data))
+        //     context.commit(SET_INFO, response.data.result)
+        // })
         context.commit(SET_AUTH, payload)
     },
     [LOGIN_GOOGLE](context, credentials) {
@@ -138,6 +144,11 @@ const actions = {
             .signInWithEmailAndPassword(user.email, user.password)
             .then(function (response) {
                 var user = response.user
+                axios.get('https://tot-hackathon-2019.firebaseapp.com/api/user/'+user.uId)
+                .then(function (response) {
+                    console.log("KUY " + JSON.stringify(response.data))
+                    context.commit(SET_INFO, response.data.result)
+                })
                 console.log(user + " IS USER!")
                 context.commit(SET_AUTH, user)
                 context.commit(SET_LOADING, false)

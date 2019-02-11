@@ -60,7 +60,7 @@
           <v-icon right dark>navigate_next</v-icon>
         </v-btn>
         <v-layout v-else>
-          <v-btn to="/Profile" flat class="body-2">
+          <v-btn to="/Profile" flat class="body-2" @click="profileInfo">
             <v-avatar class>
               <img :src="`${this.getUser.photoURL}`" alt="userImg">
             </v-avatar>
@@ -136,6 +136,9 @@ export default {
     },
     changeBranch(branch) {
       console.log(this.selectedItem);
+    },
+    profileInfo(){
+      this.$store.dispatch(GETPROFILE,this.getUser.uId);
     }
   },
   computed: {
@@ -152,11 +155,6 @@ export default {
         this.dialogVisible = false;
       }
     },
-<<<<<<< HEAD
-      selectedItem: function (newVal) {
-    console.log(newVal);
-  }
-=======
     select(value) {
       console.log(value);
       this.$store.dispatch(FETCH_ARTICLE, value);
@@ -164,7 +162,6 @@ export default {
   },
   mounted: function() {
     this.$store.dispatch(FETCH_ARTICLE, this.select);
->>>>>>> 42127735e22ff094eb7a14cbb9ab9b3b37da1cb3
   }
 };
 </script>
