@@ -5,9 +5,7 @@
         <v-flex>
           <h3 class="display-3">Welcome to the site</h3>
 
-          <span
-            class="subheading"
-          >Lorem ipsum dolor sit amet, pri veniam forensibus id. Vis maluisset molestiae id, ad semper lobortis cum. At impetus detraxit incorrupte usu, repudiare assueverit ex eum, ne nam essent vocent admodum.</span>
+          <span class="subheading">Hello! {{getUserInfo.name}}, Welcome Home!</span>
         </v-flex>
       </v-layout>
     </v-container>
@@ -19,7 +17,20 @@
         <v-tab-item v-for="(n) in articles" :key="n">
           <v-card flat>
             <v-container>
-              <v-alert :value="true" color="success" icon="check_circle" outline>{{status.report}}</v-alert>
+              <v-alert
+                v-if="status.statusCode == 200"
+                :value="true"
+                color="success"
+                icon="check_circle"
+                outline
+              >{{status.report}}</v-alert>
+              <v-alert
+                v-else
+                :value="true"
+                color="warning"
+                icon="priority_high"
+                outline
+              >{{status.report}}</v-alert>
               <v-divider class="my-3"></v-divider>
 
               <v-layout>
@@ -54,29 +65,6 @@
         </v-tab-item>
       </v-tabs>
     </div>
-
-    <!-- calender -->
-    <v-layout>
-      <v-flex>
-        <v-sheet height="500">
-          <v-calendar :now="today" :value="today" color="primary">
-            <v-layout slot="day" slot-scope="{ present, past, date }" fill-height>
-              <template>
-                <v-sheet
-                  v-for="(percent, i) in tracked[date]"
-                  :key="i"
-                  :title="category[i]"
-                  :color="colors[i]"
-                  :width="`${percent}%`"
-                  height="100%"
-                  tile
-                ></v-sheet>
-              </template>
-            </v-layout>
-          </v-calendar>
-        </v-sheet>
-      </v-flex>
-    </v-layout>
   </div>
 </template>
 
@@ -97,10 +85,10 @@ export default {
   name: "Home",
   data() {
     return {
-      active: 1,
+      active: 0,
       status: {
-        report: "",
-        statusCode: "0"
+        report: "We work as normal :)",
+        statusCode: "200"
       },
       today: "year",
       tracked: {
@@ -154,6 +142,19 @@ export default {
           return response.data.report;
         });
     },
+    setIcon(level) {
+      if (level == 500) {
+        return {
+          color: "warning",
+          icon: "priority_high"
+        };
+      } else {
+        return {
+          color: "success",
+          icon: "check_circle"
+        };
+      }
+    },
     setImage(level) {
       if (level >= 0 && level <= 50) {
         return "https://ak4.picdn.net/shutterstock/videos/6706324/thumb/1.jpg";
@@ -170,11 +171,27 @@ export default {
       }
     }
   },
+  beforeCreate: function() {
+    var vm = this;
+
+    console.log("KUY!!!!!!!!");
+    axios
+      .get(
+        "https://tot-hackathon-2019.firebaseapp.com/api/" +
+          this.getCurrentBranch +
+          "/" +
+          this.articles[0].timeStamp
+      )
+      .then(function(response) {
+        console.log("KUY " + JSON.stringify(response.data.report));
+        vm.status.report = response.data.report;
+        vm.status.statusCode = response.data.status;
+      });
+  },
   mounted: function() {
-    this.fetchArticles();
   },
   computed: {
-    ...mapGetters(["articles", "getCurrentBranch"])
+    ...mapGetters(["articles", "getCurrentBranch", "getUserInfo"])
   },
   watch: {
     active(value) {
