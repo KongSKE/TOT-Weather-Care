@@ -22,15 +22,22 @@ const unsubscribe = firebase.auth().onAuthStateChanged(firebaseUser => {
     store,
     template: '<App/>',
     created() {
-      if (this.$route.path == '/register' || this.$route.path == '/login') {
-        //do nothing
-      }
-      else if (firebaseUser) {
+      if (firebaseUser) {
         store.dispatch(AUTO_LOGIN, firebaseUser)
-      } else {
-        console.log(this.$route.path)
-        unsubscribe()
-        router.push('login')
+        if (this.$route.path == '/register' || this.$route.path == '/login') {
+          unsubscribe()
+          router.push('/')
+        }
+      }
+      else {
+        if (this.$route.path == '/register' || this.$route.path == '/login') {
+          //do nothing
+        }
+        else {
+          console.log(this.$route.path)
+          unsubscribe()
+          router.push('/login')
+        }
       }
     }
   })
