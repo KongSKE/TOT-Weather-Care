@@ -1,7 +1,22 @@
 <template>
   <div>
+    <v-container fill-height>
+      <v-layout column align-center>
+        <v-flex>
+          <h3 class="display-3">Welcome to the site</h3>
+
+          <span
+            class="subheading"
+          >Lorem ipsum dolor sit amet, pri veniam forensibus id. Vis maluisset molestiae id, ad semper lobortis cum. At impetus detraxit incorrupte usu, repudiare assueverit ex eum, ne nam essent vocent admodum.</span>
+
+          <v-divider class="my-3"></v-divider>
+          <v-alert :value="true" color="success" icon="check_circle" outline>Safety</v-alert>
+        </v-flex>
+      </v-layout>
+    </v-container>
+
     <v-layout row class="justify-center" wrap>
-      <v-flex lg9 sm12>
+      <v-flex lg5 sm12>
         <v-card>
           <v-img class="white--text" height="200px" :src="setImage(articles[0].aqi[0].aqi)">
             <v-container fill-height fluid>
@@ -45,46 +60,33 @@
       </v-flex>
     </v-layout>
 
-    <v-divider></v-divider>
+    <v-divider class="my-3"></v-divider>
 
     <!-- Today and tomorrow tab -->
     <div>
-      <v-tabs
-        v-model="active"
-        color="cyan"
-        dark
-        centered=true
-        slider-color="yellow"
-        grow=true
-      >
-        <v-tab
-          v-for="n in articles"
-          :key="n"
-        >{{ n.date }}</v-tab>
-        <v-tab-item
-          v-for="(n,nIndex) in articles"
-          :key="n"
-        >
+      <v-tabs v-model="active" color="cyan" dark centered="true" slider-color="yellow" grow="true">
+        <v-tab v-for="n in articles" :key="n">{{ n.date }}</v-tab>
+        <v-tab-item v-for="(n) in articles" :key="n">
           <v-card flat>
             <v-card-text></v-card-text>
-              <v-container>
-                <v-layout >
-                  <v-flex lg4 :key="data" v-for="(data, dataIndex)  in n.aqi">
-                    <!-- <div v-if="!(nIndex == 0 && dataIndex == 0)"> -->
-                    <div>
-                      <v-card>
-                        <v-img class="white--text" height="200px" :src="setImage(data.aqi)">
-                          <v-container fill-height fluid>
-                            <v-layout fill-height>
-                              <v-flex xs12 align-end flexbox>
-                                <p class="headline">{{data.description}}</p>
-                                <p class="headline">AQI: {{data.aqi}}</p>
-                                <p>{{data.density}} microgram / cubic meters</p>
-                                <p>{{data.time}} in {{ n.date }}</p>
-                              </v-flex>
-                            </v-layout>
-                          </v-container>
-                        </v-img>
+            <v-container>
+              <v-layout>
+                <v-flex lg4 :key="data" v-for="(data)  in n.aqi">
+                  <!-- <div v-if="!(nIndex == 0 && dataIndex == 0)"> -->
+                  <div>
+                    <v-card>
+                      <v-img class="white--text" height="200px" :src="setImage(data.aqi)">
+                        <v-container fill-height fluid>
+                          <v-layout fill-height>
+                            <v-flex xs12 align-end flexbox>
+                              <p class="headline">{{data.description}}</p>
+                              <p class="headline">AQI: {{data.aqi}}</p>
+                              <p>{{data.density}} microgram / cubic meters</p>
+                              <p>{{data.time}} in {{ n.date }}</p>
+                            </v-flex>
+                          </v-layout>
+                        </v-container>
+                      </v-img>
 
                         <v-card-actions>
                           <!-- <v-btn flat>Share</v-btn> -->
@@ -124,7 +126,7 @@
       </v-tabs>
     </div>
 
-<!-- calender -->
+    <!-- calender -->
     <v-layout>
       <v-flex>
         <v-sheet height="500">
@@ -153,35 +155,44 @@
 import { mapGetters } from "vuex";
 import { FETCH_ARTICLE } from "@/store/actions.type";
 var myDate = new Date();
-var month = ('0' + (myDate.getMonth() + 1)).slice(-2);
-var date = ('0' + myDate.getDate()).slice(-2);
+var month = ("0" + (myDate.getMonth() + 1)).slice(-2);
+var date = ("0" + myDate.getDate()).slice(-2);
 var year = myDate.getFullYear();
-var formattedDate = year + '-' + month + '-' + date;
+var formattedDate = year + "-" + month + "-" + date;
 console.log(formattedDate);
 
 export default {
   name: "Home",
   data() {
     return {
-      today: 'year',
+      today: "year",
       tracked: {
-        '2019-02-14': [23, 45, 10],
-        '2019-02-13': [10, 25, 10],
-        '2019-02-12': [10, 25, 10],
-        '2019-02-11': [10, 25, 10],
-        '2019-02-10': [10, 25, 10],
-        '2019-02-09': [23, 45, 10],
-        '2019-02-08': [10, 30, 10, 20, 30],
-        '2019-02-07': [0, 78, 5],
-        '2019-02-06': [0, 0, 50],
-        '2019-02-05': [0, 10, 23],
-        '2019-02-04': [2, 90],
-        '2019-02-03': [10, 32],
-        '2019-02-02': [80, 10, 10],
-        '2019-02-01': [20, 25, 10]
+        "2019-02-09": [23, 45, 10],
+        "2019-02-08": [10, 30, 10, 20, 30],
+        "2019-02-07": [0, 78, 5],
+        "2019-02-06": [0, 0, 50],
+        "2019-02-05": [0, 10, 23],
+        "2019-02-04": [2, 90],
+        "2019-02-03": [10, 32],
+        "2019-02-02": [80, 10, 10],
+        "2019-02-01": [20, 25, 10]
       },
-      colors: ['#00CC00', '#FFFF00', '#FF8C00', '#FF0000', '#CC0099', '#CC0000'],
-      category: ['Good', 'Moderate', 'Unhealthy-s', 'Unhealthy', 'v-Unhealthy', 'Hazardous'],
+      colors: [
+        "#00CC00",
+        "#FFFF00",
+        "#FF8C00",
+        "#FF0000",
+        "#CC0099",
+        "#CC0000"
+      ],
+      category: [
+        "Good",
+        "Moderate",
+        "Unhealthy-s",
+        "Unhealthy",
+        "v-Unhealthy",
+        "Hazardous"
+      ],
       dialog: false
     };
   },

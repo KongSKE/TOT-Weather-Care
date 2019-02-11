@@ -60,7 +60,7 @@
           <v-icon right dark>navigate_next</v-icon>
         </v-btn>
         <v-layout v-else>
-          <v-btn to="/Profile" flat class="body-2">
+          <v-btn to="/Profile" flat class="body-2" @click="profileInfo">
             <v-avatar class>
               <img :src="`${this.getUser.photoURL}`" alt="userImg">
             </v-avatar>
@@ -109,7 +109,7 @@ import { mapGetters } from "vuex";
 import { LOGOUT } from "@/store/actions.type";
 import SignInFacebookBtn from "@/components/auth/SignInFacebookBtn";
 import SignInGoogleBtn from "@/components/auth/SignInGoogleBtn";
-import { FETCH_ARTICLE } from "@/store/actions.type";
+import { FETCH_ARTICLE,GETPROFILE } from "@/store/actions.type";
 
 export default {
   name: "Header",
@@ -133,6 +133,12 @@ export default {
     },
     redirect(url) {
       window.location.href = url;
+    },
+    changeBranch(branch) {
+      console.log(this.selectedItem);
+    },
+    profileInfo(){
+      this.$store.dispatch(GETPROFILE,this.getUser.uId);
     }
   },
   computed: {
