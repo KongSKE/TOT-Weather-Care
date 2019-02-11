@@ -109,7 +109,7 @@ import { mapGetters } from "vuex";
 import { LOGOUT } from "@/store/actions.type";
 import SignInFacebookBtn from "@/components/auth/SignInFacebookBtn";
 import SignInGoogleBtn from "@/components/auth/SignInGoogleBtn";
-import { FETCH_ARTICLE } from "@/store/actions.type";
+import { FETCH_ARTICLE,GETPROFILE } from "@/store/actions.type";
 
 export default {
   name: "Header",
@@ -121,12 +121,7 @@ export default {
       dialogVisible: false,
       loading: true,
       sideNav: false,
-<<<<<<< HEAD
-      items: ["Bangsaothong", "Bangbor", "Bangpeeyai"],
-      selectedItem: "Bangsaothong"
-=======
       items: ["Bangsaothong", "Bangpeeyai", "Bangbor"]
->>>>>>> 42127735e22ff094eb7a14cbb9ab9b3b37da1cb3
     };
   },
   methods: {
