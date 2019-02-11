@@ -12,6 +12,7 @@ import firebase from '@/config/firebaseConfig'
 Vue.use(Vuetify)
 Vue.config.productionTip = false
 
+
 /* eslint-disable no-new */
 const unsubscribe = firebase.auth().onAuthStateChanged(firebaseUser => {
   new Vue({
@@ -21,8 +22,15 @@ const unsubscribe = firebase.auth().onAuthStateChanged(firebaseUser => {
     store,
     template: '<App/>',
     created() {
-      if (firebaseUser) {
+      if (this.$route.path == '/register' || this.$route.path == '/login') {
+        //do nothing
+      }
+      else if (firebaseUser) {
         store.dispatch(AUTO_LOGIN, firebaseUser)
+      } else {
+        console.log(this.$route.path)
+        unsubscribe()
+        router.push('login')
       }
     }
   })
