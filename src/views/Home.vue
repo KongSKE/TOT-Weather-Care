@@ -18,13 +18,14 @@
         </v-card>
       </v-flex>
     </v-layout>-->
+    
     <v-layout row class="justify-center" wrap>
       <v-flex lg9 sm12>
         <v-card>
           <v-img
             class="white--text"
             height="200px"
-            src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+            :src="setImage(articles[0].aqi[0].aqi)"
           >
             <v-container fill-height fluid>
               <v-layout fill-height>
@@ -32,8 +33,7 @@
                   <p class="headline">{{articles[0].aqi[0].description}}</p>
                   <p class="headline">AQI: {{articles[0].aqi[0].aqi}}</p>
                   <p>{{articles[0].aqi[0].density}}</p>
-                                <span class="grey--text">{{articles[0].aqi[0].time}} Today</span>
-
+                  <span class="grey--text">{{articles[0].aqi[0].time}} Today</span>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -65,13 +65,14 @@
         </v-card>
       </v-flex>
     </v-layout>-->
+
     <v-layout>
       <v-flex lg4 :key="data" v-for="(data, index)  in articles[0].aqi">
         <v-card v-if="index != 0">
           <v-img
             class="white--text"
             height="200px"
-            src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+            :src="setImage(data.aqi)"
           >
             <v-container fill-height fluid>
               <v-layout fill-height>
@@ -110,11 +111,33 @@ export default {
   methods: {
     fetchArticles() {
       this.$store.dispatch(FETCH_ARTICLE);
+    },
+    setImage(level) {
+      if(level >= 0 && level <= 50) {
+        return 'https://ak4.picdn.net/shutterstock/videos/6706324/thumb/1.jpg'
+      }
+      else if(level >= 51 && level < 100) {
+        return 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuJcsQw9mAsEP-MhZ2IFDbyqdS4_BW48eah2M9jf1v7Q2e2kfc'
+      }
+      else if(level >= 101 && level < 150) {
+        return 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvaGkibJvm7W_MkiF3VXVuXKUxMZGs9grlRJ4HlQ_81QaF5faE'
+      }
+      else if(level >= 151 && level < 200) {
+        return 'https://www.thenewsminute.com/sites/default/files/styles/news_detail/public/air%20pollution%203x2.jpg?itok=cqnVuMCV'
+      }
+      else if(level >= 201 && level < 300) {
+        return 'https://images.wallpaperscraft.com/image/night_city_fires_light_helicopters_smoke_skyscrapers_21724_1920x1080.jpg'
+      }
+      else if(level > 300){
+        return 'http://sciencenordic.com/sites/default/files/imagecache/620x/sn_146.jpg'
+      }
     }
   },
   mounted: function() {
     this.fetchArticles();
   },
-  computed: { ...mapGetters(["articles"]) }
+  computed: { 
+    ...mapGetters(["articles"])
+  }
 };
 </script>
