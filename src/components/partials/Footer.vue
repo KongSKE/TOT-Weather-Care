@@ -20,12 +20,12 @@
           dark
           icon
         >
-          <v-icon size="24px">{{ icon }}</v-icon>
+          <v-icon @click="socialLink(icon)" size="24px">{{ icon }}</v-icon>
         </v-btn>
       </v-card-title>
 
       <v-card-actions class="grey darken-3 justify-center">
-        &copy;2019 — <strong>TOT Hackathon</strong>
+        &copy;2019 — <strong> TOT Hackathon</strong>
       </v-card-actions>
     </v-card>
   </v-footer>
@@ -38,10 +38,23 @@ export default {
 		icons: [
 			'fab fa-facebook',
 			'fab fa-twitter',
-			'fab fa-google-plus',
-			'fab fa-linkedin',
-			'fab fa-instagram'
+			'fab fa-linkedin'
 		]
-	})
+  }),
+  methods: {
+    socialLink(icon) {
+      let app = icon.split('fab fa-')[1]
+      console.log('Linked to ' + app);
+      if(app == 'facebook') {
+        window.location = 'https://web.facebook.com/TOTPublic/?_rdc=1&_rdr'
+      }
+      else if(app == 'twitter') {
+        window.location = 'https://twitter.com/totpublic'
+      }
+      else if(app == 'linkedin') {
+        window.location = 'https://th.linkedin.com/company/tot'
+      }
+    }
+  }
 };
 </script>
