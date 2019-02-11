@@ -50,6 +50,7 @@
       </v-flex>
     </v-layout>
 
+<!-- calender -->
     <v-layout>
       <v-flex>
         <v-sheet height="500">
@@ -95,7 +96,7 @@ export default {
         '2019-01-01': [20, 25, 10]
       },
       colors: ['#00CC00', '#FFFF00', '#FF8C00', '#FF0000', '#CC0099', '#CC0000'],
-      category: ['Development', 'Meetings', 'Slacking']
+      category: ['Good', 'Moderate', 'Unhealthy-s', 'Unhealthy', 'v-Unhealthy', 'Hazardous']
     };
   },
   methods: {
