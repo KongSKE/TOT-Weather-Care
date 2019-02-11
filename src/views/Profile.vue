@@ -53,10 +53,10 @@
                   ></v-textarea>
                 </v-flex>
               </v-layout>
-              <v-layout row wrap justify-center>
+              <!-- <v-layout row wrap justify-center>
                 <v-btn color="success" @click="saveClicked">Save</v-btn>
                 <v-btn color="error" @click="cancelClicked">Cancel</v-btn>
-              </v-layout>
+              </v-layout> -->
             </v-container>
           </v-form>
         </v-flex>
@@ -78,7 +78,7 @@ export default {
     },
     methods: {
         saveClicked() {
-            
+
         },
         cancelClicked() {
             window.location = Home;
