@@ -34,6 +34,8 @@
 
 <script>
 import Register from "@/views/Register";
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -54,9 +56,18 @@ export default {
     },
     signinClicked() {
       // check password and email
-      var email_name = email
-      var password_name = password
       console.log(this.email)
+      var vm = this
+      axios
+      .post(
+        "https://tot-hackathon-2019.firebaseapp.com/api/user/checkid",
+        qs.stringify({ userid: this.email, }),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
+        }
+      )
     },
     linkClicked() {
       window.location = "/Register";
