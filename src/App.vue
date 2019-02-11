@@ -2,15 +2,14 @@
   <v-app>
     
     <Header></Header>
-
+    
     <v-container
       fluid
       grid-list-xl
-      style="padding-top:4%"
+      style="margin-top: 4%"
     >
       <router-view></router-view>
     </v-container>
-
 
     <Footer> </Footer>
     
