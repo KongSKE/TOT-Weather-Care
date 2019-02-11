@@ -44,7 +44,7 @@ export default {
         return 'https://ak4.picdn.net/shutterstock/videos/6706324/thumb/1.jpg'
       }
       else if(level >= 51 && level < 100) {
-        return 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuJcsQw9mAsEP-MhZ2IFDbyqdS4_BW48eah2M9jf1v7Q2e2kfc'
+        return 'https://cloud.lovindublin.com/images/_featuredImage/Screen-Shot-2017-05-06-at-13.24.02.png?mtime=20170506132419'
       }
       else if(level >= 101 && level < 150) {
         return 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvaGkibJvm7W_MkiF3VXVuXKUxMZGs9grlRJ4HlQ_81QaF5faE'
