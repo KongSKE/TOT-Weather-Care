@@ -14,14 +14,14 @@
                 <v-layout justify-center>
                   <img src="@/assets/user-logo.png" width="30%" height="60%">
                 </v-layout>
-                <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
-                <v-text-field v-model="password" :rules="nameRules" label="Password" required></v-text-field>
+                <v-text-field v-model="email" :rules="emailRules" label="E-mail" required ref="email"></v-text-field>
+                <v-text-field type="password" v-model="password" :rules="nameRules" label="Password" required></v-text-field>
                 <v-layout justify-center>
-                  <v-btn @click="sigininClicked">Sign-in</v-btn>
+                  <v-btn @click="signinClicked">Sign-in</v-btn>
                   <v-btn @click="clearClicked">clear</v-btn>
                 </v-layout>
-                <v-layout justify-center>
-                  <a v-bind:href="Register" @click="linkClicked">Don't have an account yet?</a>
+                <v-layout row wrap justify-center>
+                  <a @click="linkClicked">Don't have an account yet?</a>
                 </v-layout>
               </v-flex>
             </v-layout>
@@ -34,7 +34,6 @@
 
 <script>
 import Register from "@/views/Register";
-
 export default {
   data() {
     return {
@@ -55,9 +54,12 @@ export default {
     },
     signinClicked() {
       // check password and email
+      var email_name = email
+      var password_name = password
+      console.log(this.email)
     },
     linkClicked() {
-      window.location = "Register";
+      window.location = "/Register";
     }
   }
 };
