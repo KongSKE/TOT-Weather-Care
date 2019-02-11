@@ -9,7 +9,7 @@
                 <v-flex xs12 align-end flexbox>
                   <p class="headline">{{articles[0].aqi[0].description}}</p>
                   <p class="headline">AQI: {{articles[0].aqi[0].aqi}}</p>
-                  <p>{{articles[0].aqi[0].density}}</p>
+                  <p>{{articles[0].aqi[0].density}} microgram / cubic meters</p>
                   <span class="grey--text">{{articles[0].aqi[0].time}} Today</span>
                 </v-flex>
               </v-layout>
@@ -25,30 +25,59 @@
 
     <v-divider></v-divider>
 
-    <v-layout>
-      <v-flex lg4 :key="data" v-for="(data, index)  in articles[0].aqi">
-        <v-card v-if="index != 0">
-          <v-img class="white--text" height="200px" :src="setImage(data.aqi)">
-            <v-container fill-height fluid>
-              <v-layout fill-height>
-                <v-flex xs12 align-end flexbox>
-                  <p class="headline">{{data.description}}</p>/
-                  <p class="headline">AQI: {{data.aqi}}</p>
-                  <p>{{data.density}}</p>
-                  <span class="grey--text">{{articles[0].aqi[0].time}} Today</span>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-img>
+    <!-- Today and tomorrow tab -->
+    <div>
+      <v-tabs
+        v-model="active"
+        color="cyan"
+        dark
+        centered=true
+        slider-color="yellow"
+        grow=true
+      >
+        <v-tab
+          v-for="n in articles"
+          :key="n"
+        >{{ n.date }}</v-tab>
+        <v-tab-item
+          v-for="(n,nIndex) in articles"
+          :key="n"
+        >
+          <v-card flat>
+            <v-card-text></v-card-text>
+              <v-container>
+                <v-layout >
+                  <v-flex lg4 :key="data" v-for="(data, dataIndex)  in n.aqi">
+                    <!-- <div v-if="!(nIndex == 0 && dataIndex == 0)"> -->
+                    <div>
+                      <v-card>
+                        <v-img class="white--text" height="200px" :src="setImage(data.aqi)">
+                          <v-container fill-height fluid>
+                            <v-layout fill-height>
+                              <v-flex xs12 align-end flexbox>
+                                <p class="headline">{{data.description}}</p>
+                                <p class="headline">AQI: {{data.aqi}}</p>
+                                <p>{{data.density}} microgram / cubic meters</p>
+                                <p>{{data.time}} in {{ n.date }}</p>
+                              </v-flex>
+                            </v-layout>
+                          </v-container>
+                        </v-img>
 
-          <v-card-actions>
-            <v-btn flat>Share</v-btn>
-            <v-btn flat color="purple">Explore</v-btn>
-            <v-spacer></v-spacer>
-          </v-card-actions>
-        </v-card>
-      </v-flex>
-    </v-layout>
+                        <v-card-actions>
+                          <v-btn flat>Share</v-btn>
+                          <v-btn flat color="purple">Explore</v-btn>
+                          <v-spacer></v-spacer>
+                        </v-card-actions>
+                      </v-card>
+                    </div>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+          </v-card>
+        </v-tab-item>
+      </v-tabs>
+    </div>
 
 <!-- calender -->
     <v-layout>
@@ -91,15 +120,15 @@ export default {
     return {
       today: 'year',
       tracked: {
-        '2019-01-09': [23, 45, 10],
-        '2019-01-08': [10, 30, 10, 20, 30],
-        '2019-01-07': [0, 78, 5],
-        '2019-01-06': [0, 0, 50],
-        '2019-01-05': [0, 10, 23],
-        '2019-01-04': [2, 90],
-        '2019-01-03': [10, 32],
-        '2019-01-02': [80, 10, 10],
-        '2019-01-01': [20, 25, 10]
+        '2019-02-09': [23, 45, 10],
+        '2019-02-08': [10, 30, 10, 20, 30],
+        '2019-02-07': [0, 78, 5],
+        '2019-02-06': [0, 0, 50],
+        '2019-02-05': [0, 10, 23],
+        '2019-02-04': [2, 90],
+        '2019-02-03': [10, 32],
+        '2019-02-02': [80, 10, 10],
+        '2019-02-01': [20, 25, 10]
       },
       colors: ['#00CC00', '#FFFF00', '#FF8C00', '#FF0000', '#CC0099', '#CC0000'],
       category: ['Good', 'Moderate', 'Unhealthy-s', 'Unhealthy', 'v-Unhealthy', 'Hazardous']
