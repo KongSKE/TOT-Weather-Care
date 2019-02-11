@@ -2,7 +2,8 @@ import {
     SET_AUTH,
     PURGE_AUTH,
     SET_ERROR,
-    SET_LOADING
+    SET_LOADING,
+    SET_INFO
 } from './../mutations.type'
 import {
     LOGIN_FACEBOOK,
@@ -10,7 +11,8 @@ import {
     LOGOUT,
     UPDATE_USER,
     AUTO_LOGIN,
-    LOGIN_EMAIL
+    LOGIN_EMAIL,
+    GETPROFILE
 } from './../actions.type'
 
 import axios from "axios";
@@ -22,7 +24,8 @@ const state = {
     user: null,
     error: '',
     loading: false,
-    isAuthenticated: false
+    isAuthenticated: false,
+    userInfo: null
 }
 
 const getters = {
@@ -41,6 +44,21 @@ const getters = {
 }
 
 const actions = {
+    [GETPROFILE](context,uId){
+        axios.get('https://tot-hackathon-2019.firebaseapp.com/api/user/'+uId)
+        .then(function (response) {
+            console.log(uId)
+            console.log("KUY " + JSON.stringify(response.data))
+            context.commit(SET_INFO, response.data.result)
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error)
+        })
+        .then(function () {
+            // always executed
+        })
+    },
     [LOGIN_FACEBOOK](context) {
         console.log('LOGIN CALLED!')
         context.commit(SET_LOADING, true)
@@ -89,6 +107,11 @@ const actions = {
     [AUTO_LOGIN](context, payload) {
         console.log('AUTO_LOGIN CALLED!')
         console.log(payload)
+        // axios.get('https://tot-hackathon-2019.firebaseapp.com/api/user/'+uId)
+        // .then(function (response) {
+        //     console.log("KUY " + JSON.stringify(response.data))
+        //     context.commit(SET_INFO, response.data.result)
+        // })
         context.commit(SET_AUTH, payload)
     },
     [LOGIN_GOOGLE](context, credentials) {
@@ -121,6 +144,11 @@ const actions = {
             .signInWithEmailAndPassword(user.email, user.password)
             .then(function (response) {
                 var user = response.user
+                axios.get('https://tot-hackathon-2019.firebaseapp.com/api/user/'+user.uId)
+                .then(function (response) {
+                    console.log("KUY " + JSON.stringify(response.data))
+                    context.commit(SET_INFO, response.data.result)
+                })
                 console.log(user + " IS USER!")
                 context.commit(SET_AUTH, user)
                 context.commit(SET_LOADING, false)
@@ -142,6 +170,9 @@ const mutations = {
     },
     [SET_LOADING](state, isLoading) {
         state.loading = isLoading
+    },
+    [SET_INFO](state,userInfo){
+        state.userInfo=userInfo
     }
 }
 
