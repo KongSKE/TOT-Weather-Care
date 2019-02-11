@@ -117,13 +117,13 @@ export default {
         return 'https://ak4.picdn.net/shutterstock/videos/6706324/thumb/1.jpg'
       }
       else if(level >= 51 && level < 100) {
-        return 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuJcsQw9mAsEP-MhZ2IFDbyqdS4_BW48eah2M9jf1v7Q2e2kfc'
+        return 'https://nac.today/_storage/asset/470652/storage/master/file/12632045/06395757.jpg'
       }
       else if(level >= 101 && level < 150) {
         return 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvaGkibJvm7W_MkiF3VXVuXKUxMZGs9grlRJ4HlQ_81QaF5faE'
       }
       else if(level >= 151 && level < 200) {
-        return 'https://www.thenewsminute.com/sites/default/files/styles/news_detail/public/air%20pollution%203x2.jpg?itok=cqnVuMCV'
+        return 'https://www.ecotech.com/wp-content/uploads/2017/03/Ecotech-Air-Pollution-is-More-Dangerous-Than-Terrorism-Boy-with-Mask.jpg'
       }
       else if(level >= 201 && level < 300) {
         return 'https://images.wallpaperscraft.com/image/night_city_fires_light_helicopters_smoke_skyscrapers_21724_1920x1080.jpg'
