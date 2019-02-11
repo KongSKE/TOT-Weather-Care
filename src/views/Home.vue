@@ -32,7 +32,7 @@
                 <v-flex xs12 align-end flexbox>
                   <p class="headline">{{articles[0].aqi[0].description}}</p>
                   <p class="headline">AQI: {{articles[0].aqi[0].aqi}}</p>
-                  <p>{{articles[0].aqi[0].density}}</p>
+                  <p>{{articles[0].aqi[0].density}} microgram / cubic meters</p>
                   <span class="grey--text">{{articles[0].aqi[0].time}} Today</span>
                 </v-flex>
               </v-layout>
@@ -66,34 +66,58 @@
       </v-flex>
     </v-layout>-->
 
-    <v-layout>
-      <v-flex lg4 :key="data" v-for="(data, index)  in articles[0].aqi">
-        <v-card v-if="index != 0">
-          <v-img
-            class="white--text"
-            height="200px"
-            :src="setImage(data.aqi)"
-          >
-            <v-container fill-height fluid>
-              <v-layout fill-height>
-                <v-flex xs12 align-end flexbox>
-                  <p class="headline">{{data.description}}</p>
-                  <p class="headline">AQI: {{data.aqi}}</p>
-                  <p>{{data.density}}</p>
-                  <span class="grey--text">{{articles[0].aqi[0].time}} Today</span>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-img>
+    <!-- Today and tomorrow tab -->
+    <div>
+      <v-tabs
+        v-model="active"
+        color="cyan"
+        dark
+        centered=true
+        slider-color="yellow"
+        grow=true
+      >
+        <v-tab
+          v-for="n in daySelection"
+          :key="n"
+        >{{ n }}</v-tab>
+        <v-tab-item
+          v-for="n in daySelection"
+          :key="n"
+        >
+          <v-card flat>
+            <v-card-text>{{ n }}</v-card-text>
+            <v-layout>
+              <v-flex lg4 :key="data" v-for="(data, index)  in articles[0].aqi">
+                <v-card v-if="index != 0">
+                  <v-img
+                    class="white--text"
+                    height="200px"
+                    :src="setImage(data.aqi)"
+                  >
+                    <v-container fill-height fluid>
+                      <v-layout fill-height>
+                        <v-flex xs12 align-end flexbox>
+                          <p class="headline">{{data.description}}</p>
+                          <p class="headline">AQI: {{data.aqi}}</p>
+                          <p>{{data.density}} microgram / cubic meters</p>
+                          <span class="grey--text">{{articles[0].aqi[0].time}} Today</span>
+                        </v-flex>
+                      </v-layout>
+                    </v-container>
+                  </v-img>
 
-          <v-card-actions>
-            <v-btn flat>Share</v-btn>
-            <v-btn flat color="purple">Explore</v-btn>
-            <v-spacer></v-spacer>
-          </v-card-actions>
-        </v-card>
-      </v-flex>
-    </v-layout>
+                  <v-card-actions>
+                    <v-btn flat>Share</v-btn>
+                    <v-btn flat color="purple">Explore</v-btn>
+                    <v-spacer></v-spacer>
+                  </v-card-actions>
+                </v-card>
+              </v-flex>
+            </v-layout>
+          </v-card>
+        </v-tab-item>
+      </v-tabs>
+    </div>
   </div>
 </template>
 
@@ -105,7 +129,10 @@ export default {
   name: "Home",
   data() {
     return {
-      text: ["sad", "asd"]
+      // text: ["sad", "asd"],
+      active: null,
+      text: 'Lorem ipsum dolor sit amet',
+      daySelection: ['Today', 'Tomorrow']
     };
   },
   methods: {
@@ -131,6 +158,10 @@ export default {
       else if(level > 300){
         return 'http://sciencenordic.com/sites/default/files/imagecache/620x/sn_146.jpg'
       }
+    },
+    next() {
+      const active = parseInt(this.active)
+      this.active = (active < 2 ? active + 1 : 0)
     }
   },
   mounted: function() {
