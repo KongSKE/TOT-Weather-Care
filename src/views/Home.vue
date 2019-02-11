@@ -78,30 +78,6 @@
         </v-tab-item>
       </v-tabs>
     </div>
-    <!-- <v-layout>
-      <v-flex lg4 :key="data" v-for="(data, index)  in articles[0].aqi">
-        <v-card>
-          <v-img class="white--text" height="200px" :src="setImage(data.aqi)">
-            <v-container fill-height fluid>
-              <v-layout fill-height>
-                <v-flex xs12 align-end flexbox>
-                  <p class="headline">{{data.description}}</p>/
-                  <p class="headline">AQI: {{data.aqi}}</p>
-                  <p>{{data.density}}</p>
-                  <span class="grey--text">{{articles[0].aqi[0].time}} Today</span>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-img>
-
-          <v-card-actions>
-            <v-btn flat>Share</v-btn>
-            <v-btn flat color="purple">Explore</v-btn>
-            <v-spacer></v-spacer>
-          </v-card-actions>
-        </v-card>
-      </v-flex>
-    </v-layout> -->
 
 <!-- calender -->
     <v-layout>
