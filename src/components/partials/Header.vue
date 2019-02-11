@@ -48,6 +48,7 @@
       <v-flex class="hidden-md-and-down" :style="branchSelectionStyle" >
         <v-select
           :items="items"
+          v-model="selectedItem"
           label="Select your Branch"
         ></v-select>
       </v-flex>
@@ -125,7 +126,8 @@ export default {
       dialogVisible: false,
       loading: true,
       sideNav: false,
-      items: ['Bangkok', 'Lopburi', 'Sukhothai', 'Phitsanulok']
+      items: ["Bangsaothong", "Bangbor", "Bangpeeyai"],
+      selectedItem: "Bangsaothong"
     };
   },
   methods: {
@@ -137,14 +139,17 @@ export default {
     },
     redirect(url) {
       window.location.href = url;
+    },
+    changeBranch(branch) {
+      console.log(this.selectedItem);
     }
   },
   computed: {
     ...mapGetters(["getUser", "isAuthenticated", "isLoading"]),
     branchSelectionStyle() {
       return {
-        'padding': '10px 100px 0px 100px'
-      }
+        padding: "10px 100px 0px 100px"
+      };
     }
   },
   watch: {
@@ -152,13 +157,15 @@ export default {
       if (value) {
         this.dialogVisible = false;
       }
-    }
+    },
+      selectedItem: function (newVal) {
+    console.log(newVal);
+  }
   }
 };
 </script>
 
 <style scoped>
-  @media (max-width: 600px) {
-
-  }
+@media (max-width: 600px) {
+}
 </style>
