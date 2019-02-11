@@ -1,5 +1,7 @@
 <template>
   <div class="login">
+    <!-- <v-alert id = 'alert' :value="false" type="error">Your email or password is incorrect.</v-alert> -->
+
     <v-container>
       <v-layout justify-center>
         <img src="@/assets/tot-logo.png" width="70%" height="70%">
@@ -19,7 +21,7 @@
                   <v-btn @click="clearClicked">clear</v-btn>
                 </v-layout>
                 <v-layout justify-center>
-                    <a v-bind:href='Register' @click="linkClicked">Don't have an account yet?</a>  
+                  <a v-bind:href="Register" @click="linkClicked">Don't have an account yet?</a>
                 </v-layout>
               </v-flex>
             </v-layout>
@@ -31,36 +33,33 @@
 </template>
 
 <script>
-import Register from '@/views/Register'
+import Register from "@/views/Register";
 
 export default {
   data() {
-      return{
-        valid: false,
-    password: "",
-    nameRules: [
-      v => !!v || "Password is required",
-    ],
-    email: "",
-    emailRules: [
-      v => !!v || "E-mail is required",
-      v => /.+@.+/.test(v) || "E-mail must be valid"
-    ]
-      }
+    return {
+      valid: false,
+      password: "",
+      nameRules: [v => !!v || "Password is required"],
+      email: "",
+      emailRules: [
+        v => !!v || "E-mail is required",
+        v => /.+@.+/.test(v) || "E-mail must be valid"
+      ]
+    };
   },
-  methods:{
-      clearClicked() {
-          this.email = "";
-          this.password = "";
-      },
-      signinClicked() {
-          // check password and email
-      },
-      linkClicked() {
-          window.location = 'Register'
-      }
+  methods: {
+    clearClicked() {
+      this.email = "";
+      this.password = "";
+    },
+    signinClicked() {
+      // check password and email
+    },
+    linkClicked() {
+      window.location = "Register";
+    }
   }
-}
-
+};
 </script>
 
