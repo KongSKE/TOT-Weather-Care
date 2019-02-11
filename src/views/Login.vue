@@ -34,7 +34,7 @@ export default {
         valid: false,
     password: "",
     nameRules: [
-      v => !!v || "Name is required",
+      v => !!v || "Password is required",
     ],
     email: "",
     emailRules: [
