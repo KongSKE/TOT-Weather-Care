@@ -12,16 +12,29 @@
 
       <!-- Stepper items -->
       <v-stepper-items>
+
         <!-- Step 1 -->
         <v-stepper-content step="1">
           <v-card>
-            <v-form v-model="valid">
+            <!-- v-model="valid" -->
+            <v-form>
               <v-container>
+                <v-layout v-if="!inputError.status" justify-center>
+                  <v-flex xs12 md4>
+                    <!-- :rules="nameRules" -->
+                    <v-alert
+                      :value="true"
+                      type="error"
+                    >
+                      {{ inputError.message }}
+                    </v-alert>
+                  </v-flex>
+                </v-layout>
                 <v-layout justify-center>
                   <v-flex xs12 md4>
+                    <!-- :rules="nameRules" -->
                     <v-text-field
                       v-model="id"
-                      :rules="nameRules"
                       :counter="10"
                       label="ID Number"
                       type="number"
@@ -31,30 +44,33 @@
                   </v-flex>
                 </v-layout>
                 <v-layout row wrap justify-center>
-                  <v-btn color="primary" @click="nextstep">Continue</v-btn>
-                  <v-btn flat>Cancel</v-btn>
+                  <v-btn color="primary" @click="step1NextStep">Continue</v-btn>
+                  <v-btn flat @click="goToLoginPage">Cancel</v-btn>
                 </v-layout>
               </v-container>
             </v-form>
           </v-card>
         </v-stepper-content>
+
         <!-- Step 2 -->
         <v-stepper-content step="2">
           <v-card>
-            <v-form v-model="valid">
+            <v-form>
               <v-container>
                 <v-layout row wrap justify-center>
                   <v-flex xs12 md4>
+                    <!-- :rules="nameRules" -->
                     <v-text-field
-                      v-model="firstname"
-                      :rules="nameRules"
+                      v-model="email"
+                      :rules=emailRules
                       label="Email"
                       placeholder="example@tot.com"
                       required
                     ></v-text-field>
+                    <!-- :rules="nameRules" -->
                     <v-text-field
-                      v-model="firstname"
-                      :rules="nameRules"
+                      v-model="password"
+                      
                       label="Password"
                       type="password"
                       placeholder="123456"
@@ -63,28 +79,30 @@
                   </v-flex>
                 </v-layout>
                 <v-layout row wrap justify-center>
-                  <v-btn color="primary" @click="nextstep">Continue</v-btn>
-                  <v-btn @click="e1--" flat>Cancel</v-btn>
+                  <v-btn color="primary" @click="e1 = 3">Continue</v-btn>
+                  <v-btn @click="e1 = 1" flat>Cancel</v-btn>
                 </v-layout>
               </v-container>
             </v-form>
           </v-card>
         </v-stepper-content>
+
         <!-- Step 3 -->
         <v-stepper-content step="3">
           <v-card>
-            <v-form v-model="valid">
+            <v-form>
               <v-container>
                 <v-layout row wrap justify-center style="margin: 5px 0px 10px 0px;">
                   <h1>Congratulations! Your register has finished.</h1>
                 </v-layout>
                 <v-layout row wrap justify-center style="margin: 5px 0px 10px 0px;">
-                  <v-btn color="primary" @click="e1 = 1">Get Started</v-btn>
+                  <v-btn color="primary" @click="goToLoginPage">Get Started</v-btn>
                 </v-layout>
               </v-container>
             </v-form>
           </v-card>
         </v-stepper-content>
+
       </v-stepper-items>
     </v-stepper>
   </div>
@@ -102,31 +120,80 @@ export default {
     return {
       e1: 0,
       text: "",
-      id: ""
+      id: "",
+      email: "",
+      password: "",
+      inputError: {
+        status: true,
+        message: ''
+      },
+      emailRules: [
+        v => !!v || "E-mail is required",
+        v => /.+@.+/.test(v) || "E-mail must be valid"
+      ]
     };
   },
   methods: {
-    nextpage() {
-      this.e1++;
+    goToLoginPage() {
+      window.location = '/login'
     },
-    nextstep() {
-      console.log(this.id);
+    step1NextStep() {
+      var vm = this
       axios
-        .post(
-          "https://tot-hackathon-2019.firebaseapp.com/api/user/checkid",
-          qs.stringify({ userid: this.id }),
-          {
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded"
-            }
+      .post(
+        "https://tot-hackathon-2019.firebaseapp.com/api/user/checkid",
+        qs.stringify({ userid: this.id }),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
           }
-        )
-        .then(function(response) {
-          console.log(response.data);
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+        }
+      )
+      .then(function(response) {
+        if(response.data.return_code == 200) {
+          console.log('Success! This number can use.')
+          vm.inputError.status = true
+          vm.inputError.message = ''
+          vm.e1 = 2
+        }
+        else {
+          vm.inputError.status = false
+          vm.inputError.message = 'This ID has been used, Please try again.'
+          console.log('Fail! This number cannot use.')
+        }
+      })
+      .catch(function(error) {
+        vm.inputError.status = false
+        vm.inputError.message = 'Error occured, Please try again.'
+        console.log(error);
+      });
+    },
+    step2NextStep() {
+      // var vm = this
+      // axios
+      // .post(
+      //   "https://tot-hackathon-2019.firebaseapp.com/api/user/checkid",
+      //   qs.stringify({ userid: this.id }),
+      //   {
+      //     headers: {
+      //       "Content-Type": "application/x-www-form-urlencoded"
+      //     }
+      //   }
+      // )
+      // .then(function(response) {
+      //   if(response.data.return_code == 500) {
+      //     console.log('Success! This number can use.')
+      //     vm.inputError = true
+      //     vm.e1 = 2
+      //   }
+      //   else {
+      //     vm.inputError = false
+      //     console.log('Fail! This number cannot use.')
+      //   }
+      // })
+      // .catch(function(error) {
+      //   console.log(error);
+      // });
     },
     appendIconCallback() {},
     prependIconCallback() {}
@@ -135,10 +202,13 @@ export default {
 </script>
 
 <style>
+
+/* Stepper style */
 #input-usage .v-input__prepend-outer,
 #input-usage .v-input__append-outer,
 #input-usage .v-input__slot,
 #input-usage .v-messages {
   border: 1px dashed rgba(0, 0, 0, 0.4);
 }
+
 </style>
