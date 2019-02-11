@@ -42,10 +42,16 @@
 
     <v-toolbar app dark class="warning">
       <v-toolbar-side-icon @click.stop="sideNav = !sideNav" class="hidden-sm-and-up"></v-toolbar-side-icon>
-
+      <!-- Toolbar label -->
       <v-toolbar-title>TOT Hackathon 2019</v-toolbar-title>
-
-      <v-spacer></v-spacer>
+      <!-- Branch selection in nav bar-->
+      <v-flex class="hidden-md-and-down" :style="branchSelectionStyle" >
+        <v-select
+          :items="items"
+          label="Select your Branch"
+        ></v-select>
+      </v-flex>
+      <!-- Option -->
       <v-toolbar-items class="hidden-xs-only">
         <v-btn to="/" class="subheading" flat>
           <v-icon left dark>home</v-icon>Home
@@ -69,6 +75,14 @@
         </v-layout>
       </v-toolbar-items>
     </v-toolbar>
+    <!-- Branch selection below -->
+    <v-flex class="hidden-lg-and-up" style="margin-top: 50px" :style="branchSelectionStyle" >
+      <v-select
+        :items="items"
+        label="Select your Branch"
+      ></v-select>
+    </v-flex>
+    <!-- Login dialog -->
     <v-dialog v-model="dialogVisible" max-width="600">
       <v-card>
         <v-card-title style="font-size: 25px">Welcome Back!</v-card-title>
@@ -110,7 +124,8 @@ export default {
       activeIndex: this.$route.path,
       dialogVisible: false,
       loading: true,
-      sideNav: false
+      sideNav: false,
+      items: ['Bangkok', 'Lopburi', 'Sukhothai', 'Phitsanulok']
     };
   },
   methods: {
@@ -125,7 +140,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["getUser", "isAuthenticated", "isLoading"])
+    ...mapGetters(["getUser", "isAuthenticated", "isLoading"]),
+    branchSelectionStyle() {
+      return {
+        'padding': '10px 100px 0px 100px'
+      }
+    }
   },
   watch: {
     isAuthenticated(value) {
@@ -136,3 +156,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+  @media (max-width: 600px) {
+
+  }
+</style>
