@@ -28,13 +28,13 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <v-list-tile @click="redirect('/blog')">
+        <v-list-tile @click="redirect('/Weather')">
           <v-list-tile-action>
             <v-icon>supervisor_account</v-icon>
           </v-list-tile-action>
 
           <v-list-tile-content>
-            <v-list-tile-title>Blog</v-list-tile-title>
+            <v-list-tile-title>Weather</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -53,14 +53,14 @@
         <v-btn to="/" class="subheading" flat>
           <v-icon left dark>home</v-icon>Home
         </v-btn>
-        <v-btn to="/blog" class="subheading" flat>
-          <v-icon left dark>supervisor_account</v-icon>Blog
+        <v-btn to="/Weather" class="subheading" flat>
+          <v-icon left dark>supervisor_account</v-icon>Weather
         </v-btn>
         <v-btn class="subheading" v-if="!isAuthenticated" flat @click="openDialog">Get Started
           <v-icon right dark>navigate_next</v-icon>
         </v-btn>
         <v-layout v-else>
-          <v-btn flat class="body-2">
+          <v-btn to="/Profile" flat class="body-2">
             <v-avatar class>
               <img :src="`${this.getUser.photoURL}`" alt="userImg">
             </v-avatar>

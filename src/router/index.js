@@ -5,7 +5,7 @@ import Home from '@/views/Home'
 import Login from '@/views/Login'
 import Register from '@/views/Register'
 import Profile from '@/views/Profile'
-import Temp from '@/views/Temperature'
+import Weather from '@/views/Weather'
 
 Vue.use(Router)
 
@@ -33,9 +33,9 @@ export default new Router({
       component: Profile
     },
     {
-      path: '/Temp',
-      name: 'Temp',
-      component: Temp
+      path: '/Weather',
+      name: 'Weather',
+      component: Weather
     }
   ]
 })
