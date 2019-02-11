@@ -2,7 +2,7 @@
   <div class="login">
     <v-container>
       <v-layout justify-center>
-        <img src="@/assets/tot-logo.png" width="100%" height="100%">
+        <img src="@/assets/tot-logo.png" width="70%" height="70%">
       </v-layout>
       <form>
         <v-layout justify-center xs12 md4>
