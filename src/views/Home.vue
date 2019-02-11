@@ -78,15 +78,21 @@
 <script>
 import { mapGetters } from "vuex";
 import { FETCH_ARTICLE } from "@/store/actions.type";
+var myDate = new Date();
+var month = ('0' + (myDate.getMonth() + 1)).slice(-2);
+var date = ('0' + myDate.getDate()).slice(-2);
+var year = myDate.getFullYear();
+var formattedDate = year + '-' + month + '-' + date;
+console.log(formattedDate);
 
 export default {
   name: "Home",
   data() {
     return {
-       today: '2019-01-10',
+      today: 'year',
       tracked: {
         '2019-01-09': [23, 45, 10],
-        '2019-01-08': [10],
+        '2019-01-08': [10, 30, 10, 20, 30],
         '2019-01-07': [0, 78, 5],
         '2019-01-06': [0, 0, 50],
         '2019-01-05': [0, 10, 23],
