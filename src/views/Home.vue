@@ -8,37 +8,9 @@
           <span
             class="subheading"
           >Lorem ipsum dolor sit amet, pri veniam forensibus id. Vis maluisset molestiae id, ad semper lobortis cum. At impetus detraxit incorrupte usu, repudiare assueverit ex eum, ne nam essent vocent admodum.</span>
-
-          <v-divider class="my-3"></v-divider>
-          <v-alert :value="true" color="success" icon="check_circle" outline>Safety</v-alert>
         </v-flex>
       </v-layout>
     </v-container>
-
-    <v-layout row class="justify-center" wrap>
-      <v-flex lg5 sm12>
-        <v-card>
-          <v-img class="white--text" height="200px" :src="setImage(articles[0].aqi[0].aqi)">
-            <v-container fill-height fluid>
-              <v-layout fill-height>
-                <v-flex xs12 align-end flexbox>
-                  <p class="headline">{{articles[0].aqi[0].description}}</p>
-                  <p class="headline">AQI: {{articles[0].aqi[0].aqi}}</p>
-                  <p>{{articles[0].aqi[0].density}} microgram / cubic meters</p>
-                  <span class="grey--text">{{articles[0].aqi[0].time}} Today</span>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-img>
-          <v-card-actions>
-            <v-btn flat color="orange">Share</v-btn>
-            <v-btn flat color="orange">Explore</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-flex>
-    </v-layout>
-
-    <v-divider class="my-3"></v-divider>
 
     <!-- Today and tomorrow tab -->
     <div>
@@ -46,8 +18,10 @@
         <v-tab v-for="n in articles" :key="n">{{ n.date }}</v-tab>
         <v-tab-item v-for="(n) in articles" :key="n">
           <v-card flat>
-            <v-card-text></v-card-text>
             <v-container>
+              <v-alert :value="true" color="success" icon="check_circle" outline>{{status.report}}</v-alert>
+              <v-divider class="my-3"></v-divider>
+
               <v-layout>
                 <v-flex lg4 :key="data" v-for="(data)  in n.aqi">
                   <!-- <div v-if="!(nIndex == 0 && dataIndex == 0)"> -->
@@ -87,7 +61,7 @@
         <v-sheet height="500">
           <v-calendar :now="today" :value="today" color="primary">
             <v-layout slot="day" slot-scope="{ present, past, date }" fill-height>
-              <template v-if="past && tracked[date]">
+              <template>
                 <v-sheet
                   v-for="(percent, i) in tracked[date]"
                   :key="i"
@@ -109,6 +83,9 @@
 <script>
 import { mapGetters } from "vuex";
 import { FETCH_ARTICLE } from "@/store/actions.type";
+import axios from "axios";
+import { watch } from "fs";
+
 var myDate = new Date();
 var month = ("0" + (myDate.getMonth() + 1)).slice(-2);
 var date = ("0" + myDate.getDate()).slice(-2);
@@ -120,6 +97,11 @@ export default {
   name: "Home",
   data() {
     return {
+      active: 1,
+      status: {
+        report: "",
+        statusCode: "0"
+      },
       today: "year",
       tracked: {
         "2019-02-09": [23, 45, 10],
@@ -151,8 +133,26 @@ export default {
     };
   },
   methods: {
-    fetchArticles() {
-      // this.$store.dispatch(FETCH_ARTICLE);
+    fetchState(date) {
+      console.log(
+        "HEREE! " +
+          "https://tot-hackathon-2019.firebaseapp.com/api/" +
+          this.getCurrentBranch +
+          "/" +
+          date
+      );
+      axios
+        .get(
+          "https://tot-hackathon-2019.firebaseapp.com/api/" +
+            this.getCurrentBranch +
+            "/" +
+            date
+        )
+        .then(function(response) {
+          console.log("KUY " + JSON.stringify(response.data.report));
+          // status.status = response.data.status;
+          return response.data.report;
+        });
     },
     setImage(level) {
       if (level >= 0 && level <= 50) {
@@ -174,7 +174,26 @@ export default {
     this.fetchArticles();
   },
   computed: {
-    ...mapGetters(["articles"])
+    ...mapGetters(["articles", "getCurrentBranch"])
+  },
+  watch: {
+    active(value) {
+      var vm = this;
+
+      console.log(this.articles[value].timeStamp);
+      axios
+        .get(
+          "https://tot-hackathon-2019.firebaseapp.com/api/" +
+            this.getCurrentBranch +
+            "/" +
+            this.articles[value].timeStamp
+        )
+        .then(function(response) {
+          console.log("KUY " + JSON.stringify(response.data.report));
+          vm.status.report = response.data.report;
+          vm.status.statusCode = response.data.status;
+        });
+    }
   }
 };
 </script>

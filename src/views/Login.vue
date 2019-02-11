@@ -68,9 +68,9 @@ export default {
     },
     signinClicked() {
       // check password and email
-      var user = {}
-      user.email=this.email
-      user.password= this.password
+      var user = {};
+      user.email = this.email;
+      user.password = this.password;
       console.log(user);
       this.$store.dispatch(LOGIN_EMAIL, user);
     },

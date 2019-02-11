@@ -137,9 +137,6 @@ export default {
     changeBranch(branch) {
       console.log(this.selectedItem);
     },
-    profileInfo(){
-      this.$store.dispatch(GETPROFILE,this.getUser.uId);
-    }
   },
   computed: {
     ...mapGetters(["getUser", "isAuthenticated", "isLoading"]),

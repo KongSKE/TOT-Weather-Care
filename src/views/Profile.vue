@@ -4,43 +4,38 @@
       <v-layout justify-center>
         <v-flex>
           <v-layout justify-center>
-            <img src="@/assets/user-logo.png" width="20%" height="20%">
+            <img src="@/assets/user.jpg" width="20%" height="20%">
           </v-layout>
           <v-form>
             <v-container>
               <v-layout row wrap justify-center>
                 <v-flex xs12 sm6 md6>
-                  <v-text-field label="First Name" placeholder="First Name" disabled></v-text-field>
+                  <v-text-field v-model="getUserInfo.name" placeholder="First Name" disabled></v-text-field>
                 </v-flex>
               </v-layout>
               <v-layout row wrap justify-center>
                 <v-flex xs12 sm6 md6>
-                  <v-text-field label="Last Name" placeholder="Last Name" disabled></v-text-field>
+                  <v-text-field v-model="getUserInfo.lastname" placeholder="Last Name" disabled></v-text-field>
                 </v-flex>
               </v-layout>
               <v-layout row wrap justify-center>
                 <v-flex xs12 sm6 md6>
-                  <v-text-field label="Telephone Number" placeholder="0x-xxx-xxxx" disabled></v-text-field>
+                  <v-text-field v-model="getUserInfo.telephone" placeholder="0x-xxx-xxxx" disabled></v-text-field>
                 </v-flex>
               </v-layout>
               <v-layout row wrap justify-center>
                 <v-flex xs12 sm6 md6>
-                  <v-text-field label="Car" placeholder="Honda, Toyota, etc." disabled></v-text-field>
+                  <v-text-field label="Honda" disabled></v-text-field>
                 </v-flex>
               </v-layout>
               <v-layout row wrap justify-center>
                 <v-flex xs12 sm6 md6>
-                  <v-text-field label="Gasoline" placeholder="Diesel, bensin, etc." disabled></v-text-field>
+                  <v-text-field label="Diesel" disabled></v-text-field>
                 </v-flex>
               </v-layout>
               <v-layout row wrap justify-center>
                 <v-flex xs12 sm6 md6>
-                  <v-textarea
-                    name="input-7-1"
-                    label="Address"
-                    value
-                    hint="00/xx Chick road. Raccoon city England"
-                  disabled></v-textarea>
+                  <v-text-field name="input-7-1" label="55/127 Ramintra" value disabled></v-text-field>
                 </v-flex>
               </v-layout>
               <!-- <v-layout row wrap justify-center>
@@ -57,26 +52,14 @@
 
 
 <script>
-import Home from "@/views/Home";
-import Axios from "axios";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
     return {};
   },
-  methods: {
-    getProfile() {
-      var vm = this;
-      axios.get(
-        "https://tot-hackathon-2019.firebaseapp.com/api/user/checkid",
-        qs.stringify({ userid: this.email }),
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-          }
-        }
-      );
-    }
+  computed: {
+    ...mapGetters(["getUserInfo"])
   }
 };
 </script>
