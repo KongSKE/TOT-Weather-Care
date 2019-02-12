@@ -35,9 +35,7 @@
             <!-- <v-btn flat color="orange">Explore</v-btn> -->
             <div class="text-xs-center">
               <v-dialog v-model="dialog" width="500">
-                <v-btn slot="activator" color="red lighten-2" light>
-                  More
-                </v-btn>
+                <v-btn slot="activator" color="red lighten-2" light>More</v-btn>
                 <v-card>
                   <v-card-title class="headline grey lighten-2" primary-title>
                     <b>Suggestion</b>
@@ -48,9 +46,7 @@
                   <v-divider></v-divider>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" flat @click="dialog = false">
-                      OK
-                    </v-btn>
+                    <v-btn color="primary" flat @click="dialog = false">OK</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -78,47 +74,41 @@
                       <v-img class="white--text" height="200px" :src="setImage(data.aqi)">
                         <v-container fill-height fluid>
                           <v-layout fill-height>
-                            <v-flex xs12 align-end flexbox>
+                            <!-- <v-flex xs12 align-end flexbox>
                               <p class="headline">{{data.description}}</p>
                               <p class="headline">AQI: {{data.aqi}}</p>
                               <p>{{data.density}} microgram / cubic meters</p>
                               <p>{{data.time}} in {{ n.date }}</p>
-                            </v-flex>
+                            </v-flex> -->
                           </v-layout>
                         </v-container>
                       </v-img>
 
-                        <v-card-actions>
-                          <!-- <v-btn flat>Share</v-btn> -->
-                          <!-- <v-btn flat color="purple">Explore</v-btn> -->
-                          <div class="text-xs-center">
-                            <v-dialog v-model="dialog" width="500">
-                              <v-btn slot="activator" color="red lighten-2" light>
-                                More
-                              </v-btn>
-                              <v-card>
-                                <v-card-title class="headline grey lighten-2" primary-title>
-                                  <b>Suggestion</b>
-                                </v-card-title>
-                                <v-card-text>
-                                  <h3>{{ data.suggestion }}</h3>
-                                </v-card-text>
-                                <v-divider></v-divider>
-                                <v-card-actions>
-                                  <v-spacer></v-spacer>
-                                  <v-btn color="primary" flat @click="dialog = false">
-                                    OK
-                                  </v-btn>
-                                </v-card-actions>
-                              </v-card>
-                            </v-dialog>
-                          </div>
+                      <v-card-actions>
+                        <!-- <v-btn flat>Share</v-btn> -->
+                        <!-- <v-btn flat color="purple">Explore</v-btn> -->
+                        <div class="text-xs-center">
+                          <!-- <v-dialog v-model="dialog" width="500"> -->
+                            <!-- <v-btn slot="activator" color="red lighten-2" light>More</v-btn> -->
+                            <!-- <v-card>
+                              <v-card-title class="headline grey lighten-2" primary-title>
+                                <b>Suggestion</b>
+                              </v-card-title>
+                              <v-card-text>
+                                <h3>{{ data.suggestion }}</h3>
+                              </v-card-text>
+                              <v-divider></v-divider>
+                              <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="primary" flat @click="dialog = false">OK</v-btn>
+                              </v-card-actions>
+                            </v-card> -->
+                          <!-- </v-dialog> --> -->
+                        </div>
 
-                          <v-spacer></v-spacer>
-                        </v-card-actions>
-                      </v-card>
-                    </v-hover>-->
-                    <!-- new hover -->
+                        <v-spacer></v-spacer>
+                      </v-card-actions>
+                    </v-card>
                   </div>
                 </v-flex>
               </v-layout>
@@ -178,7 +168,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { FETCH_ARTICLE } from "@/store/actions.type";
-import SimpleLinearRegression from 'ml-regression-simple-linear'
+import SimpleLinearRegression from "ml-regression-simple-linear";
 var myDate = new Date();
 var month = ("0" + (myDate.getMonth() + 1)).slice(-2);
 var date = ("0" + myDate.getDate()).slice(-2);
@@ -247,16 +237,15 @@ export default {
   computed: {
     ...mapGetters(["articles"]),
     calculateByAI() {
-      let aqi = 0
-      let counter = 0
-      for(let i = 0 ; i < this.articles.length ; i++) {
-        for(let j = 0 ; j < this.articles[i].aqi.length ; j++) {
-          aqi += parseInt(this.articles[i].aqi[j].aqi)
-          counter += 1
+      let aqi = 0;
+      let counter = 0;
+      for (let i = 0; i < this.articles.length; i++) {
+        for (let j = 0; j < this.articles[i].aqi.length; j++) {
+          aqi += parseInt(this.articles[i].aqi[j].aqi);
+          counter += 1;
         }
       }
-      return (aqi / counter)
-
+      return aqi / counter;
     }
   }
 };
