@@ -25,7 +25,17 @@
               </v-layout>
               <v-layout row wrap justify-center>
                 <v-flex xs12 sm6 md6>
-                  <v-text-field label="Honda" disabled></v-text-field>
+                        <v-alert
+                        :value="true"
+                        type="error"
+                        outline>
+                      This car is not allowed to use in this company
+                      </v-alert>
+                </v-flex>
+               </v-layout>
+              <v-layout row wrap justify-center>
+                <v-flex xs12 sm6 md6>
+                  <v-text-field class="red--text" label="Honda" disabled></v-text-field>
                 </v-flex>
               </v-layout>
               <v-layout row wrap justify-center>

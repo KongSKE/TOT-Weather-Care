@@ -1,7 +1,17 @@
 <template>
   <div>
     <v-container fill-height>
-      <v-layout column align-center>
+      <v-layout row wrap column align-center>
+        <!-- <v-flex xs10 offset-xs1>
+          <v-alert
+            v-model="alert"
+            dismissible
+            type="success"
+          >This is a success alert that is closable.</v-alert>
+        </v-flex>-->
+        <div class="text-xs-center">
+          <v-btn v-if="!alert" color="primary" dark @click="alert = true">Reset</v-btn>
+        </div>
         <v-flex>
           <h3 class="display-3">Welcome Back!</h3>
 
@@ -130,47 +140,116 @@
         </v-tab-item>
       </v-tabs>
     </div>
+        <v-divider class="my-3"></v-divider>
+
+    <span class="title">My Calender</span>
+
+    <!-- Calender -->
+    <v-layout>
+      <v-flex>
+        <v-sheet height="500">
+          <v-calendar :now="year" :value="year" color="primary">
+            <v-layout slot="day" slot-scope="{ present, past, date }" fill-height>
+              <template v-if="past && tracked[date]">
+                <v-sheet
+                  v-for="(percent, i) in tracked[date]"
+                  :key="i"
+                  :title="category[i]"
+                  :color="colors[i]"
+                  :width="`${percent}%`"
+                  height="100%"
+                  tile
+                ></v-sheet>
+              </template>
+            </v-layout>
+          </v-calendar>
+        </v-sheet>
+      </v-flex>
+    </v-layout>
 
     <!-- AI Calculate -->
     <p>AI : {{ calculateByAI }}</p>
   </div>
 </template>
 
+<style>
+.jamie {
+  opacity: 0.5;
+}
+.jamie:hover {
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+/* .v-card--reveal {
+  align-items: center;
+  bottom: 0;
+  justify-content: center;
+  opacity: 0.5;
+  position: absolute;
+  width: 100%;
+} */
+</style>
+
+
 <script>
 import { mapGetters } from "vuex";
 import { FETCH_ARTICLE } from "@/store/actions.type";
 import axios from "axios";
 
-var myDate = new Date();
-var month = ("0" + (myDate.getMonth() + 1)).slice(-2);
-var date = ("0" + myDate.getDate()).slice(-2);
-var year = myDate.getFullYear();
-var formattedDate = year + "-" + month + "-" + date;
-console.log(formattedDate);
+// var myDate = new Date();
+// var month = ("0" + (myDate.getMonth() + 1)).slice(-2);
+// var date = ("0" + myDate.getDate()).slice(-2);
+// var year = myDate.getFullYear();
+// var formattedDate = year + "-" + month + "-" + date;
+// console.log(formattedDate);
 
 export default {
   name: "Home",
   data() {
     return {
+      alert: true,
       active: 0,
       show: false,
       mainShow: false,
       dialog: false,
+      year: "2019-02-12",
       status: {
         report: "We work as normal :)",
         statusCode: "200"
       },
       today: "year",
       tracked: {
-        "2019-02-09": [23, 45, 10],
-        "2019-02-08": [10, 30, 10, 20, 30],
-        "2019-02-07": [0, 78, 5],
-        "2019-02-06": [0, 0, 50],
-        "2019-02-05": [0, 10, 23],
-        "2019-02-04": [2, 90],
-        "2019-02-03": [10, 32],
-        "2019-02-02": [80, 10, 10],
-        "2019-02-01": [20, 25, 10]
+        // "2019-02-31": [0, 10, 23, 12, 0],
+        // "2019-02-30": [0, 0, 70, 30, 0],
+        // "2019-02-29": [0, 10, 23, 12, 0],
+        "2019-02-28": [0, 20, 30, 50, 0],
+        "2019-02-27": [10, 30, 20, 40, 0],
+        "2019-02-26": [0, 48, 45, 7, 0],
+        "2019-02-25": [0, 0, 70, 30, 0],
+        "2019-02-24": [0, 10, 23, 12, 0],
+        "2019-02-23": [2, 48, 25, 15, 0],
+        "2019-02-22": [10, 32, 23],
+        "2019-02-21": [10, 10, 40, 30, 0],
+        "2019-02-20": [20, 25, 30, 25, 0],
+        "2019-02-19": [0, 20, 30, 50, 0],
+        "2019-02-18": [10, 30, 20, 40, 0],
+        "2019-02-17": [0, 48, 45, 7, 0],
+        "2019-02-16": [0, 0, 70, 30, 0],
+        "2019-02-15": [0, 10, 23, 12, 0],
+        "2019-02-14": [2, 48, 25, 15, 0],
+        "2019-02-13": [10, 32, 23],
+        "2019-02-12": [10, 10, 40, 30, 0],
+        "2019-02-11": [0, 20, 70, 10, 0],
+        "2019-02-10": [20, 25, 30, 25, 0],
+        "2019-02-09": [0, 20, 30, 50, 0],
+        "2019-02-08": [10, 30, 20, 40, 0],
+        "2019-02-07": [0, 48, 45, 7, 0],
+        "2019-02-06": [0, 0, 70, 30, 0],
+        "2019-02-05": [0, 40, 33, 27, 0],
+        "2019-02-04": [2, 48, 35, 15, 0],
+        "2019-02-03": [10, 32, 53, 5, 0],
+        "2019-02-02": [10, 10, 40, 30, 0],
+        "2019-02-01": [20, 25, 30, 25, 0]
       },
       colors: [
         "#00CC00",
