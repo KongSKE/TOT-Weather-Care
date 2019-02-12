@@ -1,16 +1,20 @@
 <template>
   <div>
     <v-container fill-height>
-      <v-layout column align-center>
+      <v-layout row wrap column align-center>
+        <!-- <v-flex xs10 offset-xs1>
+          <v-alert
+            v-model="alert"
+            dismissible
+            type="success"
+          >This is a success alert that is closable.</v-alert>
+        </v-flex> -->
+        <div class="text-xs-center">
+          <v-btn v-if="!alert" color="primary" dark @click="alert = true">Reset</v-btn>
+        </div>
         <v-flex>
           <h3 class="display-3">Welcome to the site</h3>
-
-          <span
-            class="subheading"
-          >Lorem ipsum dolor sit amet, pri veniam forensibus id. Vis maluisset molestiae id, ad semper lobortis cum. At impetus detraxit incorrupte usu, repudiare assueverit ex eum, ne nam essent vocent admodum.</span>
-
-          <v-divider class="my-3"></v-divider>
-          <v-alert :value="true" color="success" icon="check_circle" outline>Safety</v-alert>
+          <span class="subheading">Hello! {{getUserInfo.name}}, Welcome Home!</span>
         </v-flex>
       </v-layout>
     </v-container>
@@ -64,8 +68,23 @@
         <v-tab v-for="n in articles" :key="n">{{ n.date }}</v-tab>
         <v-tab-item v-for="(n) in articles" :key="n">
           <v-card flat>
-            <v-card-text></v-card-text>
             <v-container>
+              <v-alert
+                v-if="status.statusCode == 200"
+                :value="true"
+                color="success"
+                icon="check_circle"
+                outline
+              >{{status.report}}</v-alert>
+              <v-alert
+                v-else
+                :value="true"
+                color="warning"
+                icon="priority_high"
+                outline
+              >{{status.report}}</v-alert>
+              <v-divider class="my-3"></v-divider>
+
               <v-layout>
                 <v-flex lg4 :key="data" v-for="(data)  in n.aqi">
                   <!-- <div v-if="!(nIndex == 0 && dataIndex == 0)"> -->
@@ -74,12 +93,12 @@
                       <v-img class="white--text" height="200px" :src="setImage(data.aqi)">
                         <v-container fill-height fluid>
                           <v-layout fill-height>
-                            <!-- <v-flex xs12 align-end flexbox>
+                            <v-flex xs12 align-end flexbox>
                               <p class="headline">{{data.description}}</p>
                               <p class="headline">AQI: {{data.aqi}}</p>
                               <p>{{data.density}} microgram / cubic meters</p>
                               <p>{{data.time}} in {{ n.date }}</p>
-                            </v-flex> -->
+                            </v-flex>
                           </v-layout>
                         </v-container>
                       </v-img>
@@ -88,9 +107,9 @@
                         <!-- <v-btn flat>Share</v-btn> -->
                         <!-- <v-btn flat color="purple">Explore</v-btn> -->
                         <div class="text-xs-center">
-                          <!-- <v-dialog v-model="dialog" width="500"> -->
-                            <!-- <v-btn slot="activator" color="red lighten-2" light>More</v-btn> -->
-                            <!-- <v-card>
+                          <v-dialog v-model="dialog" width="500">-->
+                            <v-btn slot="activator" color="red lighten-2" light>More</v-btn>-->
+                            <v-card>
                               <v-card-title class="headline grey lighten-2" primary-title>
                                 <b>Suggestion</b>
                               </v-card-title>
@@ -102,8 +121,8 @@
                                 <v-spacer></v-spacer>
                                 <v-btn color="primary" flat @click="dialog = false">OK</v-btn>
                               </v-card-actions>
-                            </v-card> -->
-                          <!-- </v-dialog> --> -->
+                            </v-card>
+                          </v-dialog>
                         </div>
 
                         <v-spacer></v-spacer>
@@ -118,11 +137,11 @@
       </v-tabs>
     </div>
 
-    <!-- calender -->
+    <!-- Calender -->
     <v-layout>
       <v-flex>
         <v-sheet height="500">
-          <v-calendar :now="today" :value="today" color="primary">
+          <v-calendar :now="year" :value="year" color="primary">
             <v-layout slot="day" slot-scope="{ present, past, date }" fill-height>
               <template v-if="past && tracked[date]">
                 <v-sheet
@@ -154,43 +173,73 @@
   opacity: 1;
   filter: alpha(opacity=100);
 }
-.v-card--reveal {
+/* .v-card--reveal {
   align-items: center;
   bottom: 0;
   justify-content: center;
   opacity: 0.5;
   position: absolute;
   width: 100%;
-}
+} */
 </style>
 
 
 <script>
 import { mapGetters } from "vuex";
 import { FETCH_ARTICLE } from "@/store/actions.type";
-import SimpleLinearRegression from "ml-regression-simple-linear";
-var myDate = new Date();
-var month = ("0" + (myDate.getMonth() + 1)).slice(-2);
-var date = ("0" + myDate.getDate()).slice(-2);
-var year = myDate.getFullYear();
-var formattedDate = year + "-" + month + "-" + date;
-console.log(formattedDate);
+import axios from "axios";
+
+// var myDate = new Date();
+// var month = ("0" + (myDate.getMonth() + 1)).slice(-2);
+// var date = ("0" + myDate.getDate()).slice(-2);
+// var year = myDate.getFullYear();
+// var formattedDate = year + "-" + month + "-" + date;
+// console.log(formattedDate);
 
 export default {
   name: "Home",
   data() {
     return {
+      alert: true,
+      active: 0,
+      year: "2019-02-12",
+      status: {
+        report: "We work as normal :)",
+        statusCode: "200"
+      },
       today: "year",
       tracked: {
-        "2019-02-09": [23, 45, 10],
-        "2019-02-08": [10, 30, 10, 20, 30],
-        "2019-02-07": [0, 78, 5],
-        "2019-02-06": [0, 0, 50],
-        "2019-02-05": [0, 10, 23],
-        "2019-02-04": [2, 90],
-        "2019-02-03": [10, 32],
-        "2019-02-02": [80, 10, 10],
-        "2019-02-01": [20, 25, 10]
+        // "2019-02-31": [0, 10, 23, 12, 0],
+        // "2019-02-30": [0, 0, 70, 30, 0],
+        // "2019-02-29": [0, 10, 23, 12, 0],
+        "2019-02-28": [0, 20, 30, 50, 0],
+        "2019-02-27": [10, 30, 20, 40, 0],
+        "2019-02-26": [0, 48, 45, 7, 0],
+        "2019-02-25": [0, 0, 70, 30, 0],
+        "2019-02-24": [0, 10, 23, 12, 0],
+        "2019-02-23": [2, 48, 25, 15, 0],
+        "2019-02-22": [10, 32, 23, ],
+        "2019-02-21": [10, 10, 40, 30, 0],
+        "2019-02-20": [20, 25, 30, 25, 0],
+        "2019-02-19": [0, 20, 30, 50, 0],
+        "2019-02-18": [10, 30, 20, 40, 0],
+        "2019-02-17": [0, 48, 45, 7, 0],
+        "2019-02-16": [0, 0, 70, 30, 0],
+        "2019-02-15": [0, 10, 23, 12, 0],
+        "2019-02-14": [2, 48, 25, 15, 0],
+        "2019-02-13": [10, 32, 23, ],
+        "2019-02-12": [10, 10, 40, 30, 0],
+        "2019-02-11": [0, 20, 70, 10, 0],
+        "2019-02-10": [20, 25, 30, 25, 0],
+        "2019-02-09": [0, 20, 30, 50, 0],
+        "2019-02-08": [10, 30, 20, 40, 0],
+        "2019-02-07": [0, 48, 45, 7, 0],
+        "2019-02-06": [0, 0, 70, 30, 0],
+        "2019-02-05": [0, 40, 33, 27, 0],
+        "2019-02-04": [2, 48, 35, 15, 0],
+        "2019-02-03": [10, 32, 53, 5, 0 ],
+        "2019-02-02": [10, 10, 40, 30, 0],
+        "2019-02-01": [20, 25, 30, 25, 0]
       },
       colors: [
         "#00CC00",
@@ -212,8 +261,39 @@ export default {
     };
   },
   methods: {
-    fetchArticles() {
-      // this.$store.dispatch(FETCH_ARTICLE);
+    fetchState(date) {
+      console.log(
+        "HEREE! " +
+          "https://tot-hackathon-2019.firebaseapp.com/api/" +
+          this.getCurrentBranch +
+          "/" +
+          date
+      );
+      axios
+        .get(
+          "https://tot-hackathon-2019.firebaseapp.com/api/" +
+            this.getCurrentBranch +
+            "/" +
+            date
+        )
+        .then(function(response) {
+          console.log("KUY " + JSON.stringify(response.data.report));
+          // status.status = response.data.status;
+          return response.data.report;
+        });
+    },
+    setIcon(level) {
+      if (level == 500) {
+        return {
+          color: "warning",
+          icon: "priority_high"
+        };
+      } else {
+        return {
+          color: "success",
+          icon: "check_circle"
+        };
+      }
     },
     setImage(level) {
       if (level >= 0 && level <= 50) {
@@ -231,11 +311,26 @@ export default {
       }
     }
   },
-  mounted: function() {
-    this.fetchArticles();
+  beforeCreate: function() {
+    var vm = this;
+
+    console.log("KUY!!!!!!!!");
+    axios
+      .get(
+        "https://tot-hackathon-2019.firebaseapp.com/api/" +
+          this.getCurrentBranch +
+          "/" +
+          this.articles[0].timeStamp
+      )
+      .then(function(response) {
+        console.log("KUY " + JSON.stringify(response.data.report));
+        vm.status.report = response.data.report;
+        vm.status.statusCode = response.data.status;
+      });
   },
+  mounted: function() {},
   computed: {
-    ...mapGetters(["articles"]),
+    ...mapGetters(["articles", "getCurrentBranch", "getUserInfo"]),
     calculateByAI() {
       let aqi = 0;
       let counter = 0;
@@ -246,6 +341,25 @@ export default {
         }
       }
       return aqi / counter;
+    },
+    watch: {
+      active(value) {
+        var vm = this;
+
+        console.log(this.articles[value].timeStamp);
+        axios
+          .get(
+            "https://tot-hackathon-2019.firebaseapp.com/api/" +
+              this.getCurrentBranch +
+              "/" +
+              this.articles[value].timeStamp
+          )
+          .then(function(response) {
+            console.log("KUY " + JSON.stringify(response.data.report));
+            vm.status.report = response.data.report;
+            vm.status.statusCode = response.data.status;
+          });
+      }
     }
   }
 };

@@ -43,7 +43,7 @@
     <v-toolbar app dark class="warning">
       <v-toolbar-side-icon @click.stop="sideNav = !sideNav" class="hidden-sm-and-up"></v-toolbar-side-icon>
       <!-- Toolbar label -->
-      <v-toolbar-title @click="redirect('/')">TOT Hackathon 2019</v-toolbar-title>
+      <v-toolbar-title>TOT Weather Care</v-toolbar-title>
       <!-- Branch selection in nav bar-->
       <v-flex class="hidden-md-and-down" :style="branchSelectionStyle">
         <v-select v-model="select" :items="items" label="Select your Branch"></v-select>
@@ -53,9 +53,9 @@
         <v-btn to="/" class="subheading" flat>
           <v-icon left dark>home</v-icon>Home
         </v-btn>
-        <v-btn to="/Weather" class="subheading" flat>
+        <!-- <v-btn to="/Weather" class="subheading" flat>
           <v-icon left dark>supervisor_account</v-icon>Weather
-        </v-btn>
+        </v-btn> -->
         <v-btn class="subheading" v-if="!isAuthenticated" flat @click="openDialog">Get Started
           <v-icon right dark>navigate_next</v-icon>
         </v-btn>
@@ -137,9 +137,6 @@ export default {
     changeBranch(branch) {
       console.log(this.selectedItem);
     },
-    profileInfo(){
-      this.$store.dispatch(GETPROFILE,this.getUser.uId);
-    }
   },
   computed: {
     ...mapGetters(["getUser", "isAuthenticated", "isLoading"]),

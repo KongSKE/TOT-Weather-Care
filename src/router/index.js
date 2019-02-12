@@ -24,12 +24,12 @@ export default new Router({
     },
     {
       path: '/register',
-      name: 'Register',
+      name: 'register',
       component: Register
     },
     {
-      path: '/Profile',
-      name: 'Profile',
+      path: '/profile',
+      name: 'profile',
       component: Profile
     },
     {

@@ -40,24 +40,27 @@ const getters = {
     },
     isLoading(state) {
         return state.loading
-    }
+    },
+    getUserInfo(state){
+        return state.userInfo
+    },
 }
 
 const actions = {
-    [GETPROFILE](context,uId){
-        axios.get('https://tot-hackathon-2019.firebaseapp.com/api/user/'+uId)
-        .then(function (response) {
-            console.log(uId)
-            console.log("KUY " + JSON.stringify(response.data))
-            context.commit(SET_INFO, response.data.result)
-        })
-        .catch(function (error) {
-            // handle error
-            console.log(error)
-        })
-        .then(function () {
-            // always executed
-        })
+    [GETPROFILE](context, uId) {
+        axios.get('https://tot-hackathon-2019.firebaseapp.com/api/user/' + uId)
+            .then(function (response) {
+                console.log(uId)
+                console.log("KUY " + JSON.stringify(response.data))
+                context.commit(SET_INFO, response.data.result)
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error)
+            })
+            .then(function () {
+                // always executed
+            })
     },
     [LOGIN_FACEBOOK](context) {
         console.log('LOGIN CALLED!')
@@ -112,6 +115,11 @@ const actions = {
         //     console.log("KUY " + JSON.stringify(response.data))
         //     context.commit(SET_INFO, response.data.result)
         // })
+        axios.get('https://tot-hackathon-2019.firebaseapp.com/api/user/' + payload.uid)
+            .then(function (response) {
+                console.log("KUY " + JSON.stringify(response.data))
+                context.commit(SET_INFO, response.data)
+            })
         context.commit(SET_AUTH, payload)
     },
     [LOGIN_GOOGLE](context, credentials) {
@@ -144,11 +152,11 @@ const actions = {
             .signInWithEmailAndPassword(user.email, user.password)
             .then(function (response) {
                 var user = response.user
-                axios.get('https://tot-hackathon-2019.firebaseapp.com/api/user/'+user.uId)
-                .then(function (response) {
-                    console.log("KUY " + JSON.stringify(response.data))
-                    context.commit(SET_INFO, response.data.result)
-                })
+                axios.get('https://tot-hackathon-2019.firebaseapp.com/api/user/' + user.uid)
+                    .then(function (response) {
+                        console.log("KUY " + JSON.stringify(response.data))
+                        context.commit(SET_INFO, response.data)
+                    })
                 console.log(user + " IS USER!")
                 context.commit(SET_AUTH, user)
                 context.commit(SET_LOADING, false)
@@ -171,8 +179,8 @@ const mutations = {
     [SET_LOADING](state, isLoading) {
         state.loading = isLoading
     },
-    [SET_INFO](state,userInfo){
-        state.userInfo=userInfo
+    [SET_INFO](state, userInfo) {
+        state.userInfo = userInfo
     }
 }
 
