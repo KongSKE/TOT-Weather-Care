@@ -3,7 +3,7 @@
     <v-container fill-height>
       <v-layout column align-center>
         <v-flex>
-          <h3 class="display-3">Welcome to the site</h3>
+          <h3 class="display-3">Welcome Back!</h3>
 
           <span class="subheading">Hello! {{getUserInfo.name}}, Welcome Home!</span>
         </v-flex>
@@ -28,28 +28,12 @@
           <v-card-actions>
             <!-- <v-btn flat color="orange">Share</v-btn> -->
             <!-- <v-btn flat color="orange">Explore</v-btn> -->
-            <div class="text-xs-center">
-              <v-dialog v-model="dialog" width="500">
-                <v-btn slot="activator" color="red lighten-2" light>
-                  More
-                </v-btn>
-                <v-card>
-                  <v-card-title class="headline grey lighten-2" primary-title>
-                    <b>Suggestion</b>
-                  </v-card-title>
-                  <v-card-text>
-                    <h3>{{ articles[0].aqi[0].suggestion }}</h3>
-                  </v-card-text>
-                  <v-divider></v-divider>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="primary" flat @click="dialog = false">
-                      OK
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-            </div>
+            <v-btn icon @click="mainShow = !mainShow">
+              <v-icon>{{ mainShow ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
+            </v-btn>
+            <v-slide-y-transition>
+              <v-card-text v-show="mainShow">{{articles[0].aqi[0].suggestion}}</v-card-text>
+            </v-slide-y-transition>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -98,39 +82,50 @@
                         </v-container>
                       </v-img>
 
-                        <v-card-actions>
-                          <!-- <v-btn flat>Share</v-btn> -->
-                          <!-- <v-btn flat color="purple">Explore</v-btn> -->
-                          <div class="text-xs-center">
-                            <v-dialog v-model="dialog" width="500">
-                              <v-btn slot="activator" color="red lighten-2" light>
-                                More
-                              </v-btn>
+                      <v-card-actions>
+                        <!-- <v-btn flat>Share</v-btn> -->
+                        <v-btn
+                          v-if="mask(data.aqi)"
+                          @click="dialog = true"
+                          flat
+                          color="purple"
+                        >Free mask!</v-btn>
+                        <div class="text-xs-center">
+                          <v-layout row justify-center>
+                            <v-dialog v-model="dialog" max-width="290">
                               <v-card>
-                                <v-card-title class="headline grey lighten-2" primary-title>
-                                  <b>Suggestion</b>
-                                </v-card-title>
-                                <v-card-text>
-                                  <h3>{{ data.suggestion }}</h3>
-                                </v-card-text>
-                                <v-divider></v-divider>
+                                <v-card-title class="headline">Congratulations!</v-card-title>
+                                <v-card-title class="grey title">derVmqo41vzoq0Ias</v-card-title>
+
+                                <v-card-text>Use this generated id for receving mask (3M 9001A)</v-card-text>
+
                                 <v-card-actions>
                                   <v-spacer></v-spacer>
-                                  <v-btn color="primary" flat @click="dialog = false">
-                                    OK
-                                  </v-btn>
+                                  <v-btn
+                                    color="green darken-1"
+                                    flat="flat"
+                                    @click="dialog = false"
+                                  >OK</v-btn>
                                 </v-card-actions>
                               </v-card>
                             </v-dialog>
-                          </div>
+                          </v-layout>
+                        </div>
 
-                          <v-spacer></v-spacer>
-                        </v-card-actions>
-                      </v-card>
-                    </div>
-                  </v-flex>
-                </v-layout>
-              </v-container>
+                        <v-spacer></v-spacer>
+                        <v-btn icon @click="show = !show">
+                          <v-icon>{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
+                        </v-btn>
+                      </v-card-actions>
+
+                      <v-slide-y-transition>
+                        <v-card-text v-show="show">{{data.suggestion}}</v-card-text>
+                      </v-slide-y-transition>
+                    </v-card>
+                  </div>
+                </v-flex>
+              </v-layout>
+            </v-container>
           </v-card>
         </v-tab-item>
       </v-tabs>
@@ -158,6 +153,9 @@ export default {
   data() {
     return {
       active: 0,
+      show: false,
+      mainShow: false,
+      dialog: false,
       status: {
         report: "We work as normal :)",
         statusCode: "200"
@@ -210,7 +208,6 @@ export default {
             date
         )
         .then(function(response) {
-          console.log("KUY " + JSON.stringify(response.data.report));
           // status.status = response.data.status;
           return response.data.report;
         });
@@ -242,59 +239,47 @@ export default {
       } else if (level > 300) {
         return "http://sciencenordic.com/sites/default/files/imagecache/620x/sn_146.jpg";
       }
+    },
+    mask(level) {
+      if (level >= 100) {
+        return true;
+      } else {
+        return false;
+      }
     }
   },
-  beforeCreate: function() {
-    var vm = this;
-
-    console.log("KUY!!!!!!!!");
-    axios
-      .get(
-        "https://tot-hackathon-2019.firebaseapp.com/api/" +
-          this.getCurrentBranch +
-          "/" +
-          this.articles[0].timeStamp
-      )
-      .then(function(response) {
-        console.log("KUY " + JSON.stringify(response.data.report));
-        vm.status.report = response.data.report;
-        vm.status.statusCode = response.data.status;
-      });
-  },
-  mounted: function() {
-  },
+  mounted: function() {},
   computed: {
     ...mapGetters(["articles", "getCurrentBranch", "getUserInfo"]),
     calculateByAI() {
-      let aqi = 0
-      let counter = 0
-      for(let i = 0 ; i < this.articles.length ; i++) {
-        for(let j = 0 ; j < this.articles[i].aqi.length ; j++) {
-          aqi += parseInt(this.articles[i].aqi[j].aqi)
-          counter += 1
+      let aqi = 0;
+      let counter = 0;
+      for (let i = 0; i < this.articles.length; i++) {
+        for (let j = 0; j < this.articles[i].aqi.length; j++) {
+          aqi += parseInt(this.articles[i].aqi[j].aqi);
+          counter += 1;
         }
       }
-      return (aqi / counter)
-  },
-  watch: {
-    active(value) {
-      var vm = this;
+      return aqi / counter;
+    },
+    watch: {
+      active(value) {
+        var vm = this;
 
-      console.log(this.articles[value].timeStamp);
-      axios
-        .get(
-          "https://tot-hackathon-2019.firebaseapp.com/api/" +
-            this.getCurrentBranch +
-            "/" +
-            this.articles[value].timeStamp
-        )
-        .then(function(response) {
-          console.log("KUY " + JSON.stringify(response.data.report));
-          vm.status.report = response.data.report;
-          vm.status.statusCode = response.data.status;
-        });
+        console.log(this.articles[value].timeStamp);
+        axios
+          .get(
+            "https://tot-hackathon-2019.firebaseapp.com/api/" +
+              this.getCurrentBranch +
+              "/" +
+              this.articles[value].timeStamp
+          )
+          .then(function(response) {
+            vm.status.report = response.data.report;
+            vm.status.statusCode = response.data.status;
+          });
+      }
     }
-  }
   }
 };
 </script>

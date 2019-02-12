@@ -55,10 +55,34 @@
         </v-btn>
         <!-- <v-btn to="/Weather" class="subheading" flat>
           <v-icon left dark>supervisor_account</v-icon>Weather
-        </v-btn> -->
+        </v-btn>-->
+        
+        <v-bottom-sheet class="pt-3" v-model="sheet">
+          <v-btn flat slot="activator">
+            <v-badge color="red">
+              <span slot="badge">!</span>
+              <v-icon large color="white">mail</v-icon>
+            </v-badge>
+          </v-btn>
+          <v-list>
+            <v-subheader>Notification</v-subheader>
+            <v-list-tile  @click="sheet = false">
+              <v-list-tile-avatar>
+                <v-avatar size="32px" tile>
+                  <img
+                    :src="`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-Z3SNHwfuNED0Qv8sTzGRkOZGTLmh2F2fr6puy9p7uqoWQGQx`"
+                  >
+                </v-avatar>
+              </v-list-tile-avatar>
+              <v-list-tile-title>Today is good day</v-list-tile-title>
+            </v-list-tile>
+          </v-list>
+        </v-bottom-sheet>
+
         <v-btn class="subheading" v-if="!isAuthenticated" flat @click="openDialog">Get Started
           <v-icon right dark>navigate_next</v-icon>
         </v-btn>
+
         <v-layout v-else>
           <v-btn to="/Profile" flat class="body-2" @click="profileInfo">
             <v-avatar class>
@@ -109,7 +133,7 @@ import { mapGetters } from "vuex";
 import { LOGOUT } from "@/store/actions.type";
 import SignInFacebookBtn from "@/components/auth/SignInFacebookBtn";
 import SignInGoogleBtn from "@/components/auth/SignInGoogleBtn";
-import { FETCH_ARTICLE,GETPROFILE } from "@/store/actions.type";
+import { FETCH_ARTICLE, GETPROFILE } from "@/store/actions.type";
 
 export default {
   name: "Header",
@@ -121,6 +145,7 @@ export default {
       dialogVisible: false,
       loading: true,
       sideNav: false,
+      sheet: false,
       items: ["Bangsaothong", "Bangpeeyai", "Bangbor"]
     };
   },
@@ -136,7 +161,7 @@ export default {
     },
     changeBranch(branch) {
       console.log(this.selectedItem);
-    },
+    }
   },
   computed: {
     ...mapGetters(["getUser", "isAuthenticated", "isLoading"]),
